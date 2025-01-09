@@ -385,5 +385,3 @@ if st.button("Download Configuration"):
         mime="application/json"
     )
 ```
-
-You can replace your current code with this corrected version.
