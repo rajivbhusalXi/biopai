@@ -384,4 +384,3 @@ if st.button("Download Configuration"):
         file_name="bioprocess_config.json",
         mime="application/json"
     )
-```
