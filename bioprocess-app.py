@@ -296,13 +296,14 @@ with tab6:
         st.plotly_chart(fig, use_container_width=True)
     
     with col12:
-        st.write("Statistical Analysis")
-        
-        # Statistical analysis options
-        stats_analysis = st.selectbox(
-            "Select Statistical Analysis",
-            ["Descriptive Statistics", "Inferential Statistics", "Regression Analysis", "Time-series Analysis"]
-        )
+    st.write("Statistical Analysis")
+    
+    # Statistical analysis options
+    stats_analysis = st.selectbox(
+        "Select Statistical Analysis",
+        ["Descriptive Statistics", "Inferential Statistics", "Regression Analysis", "Time-series Analysis"],
+        key="stats_analysis"
+    )
         
         # Confidence interval settings
         ci_level = st.number_input("Confidence Interval Level (%)", 50, 100, 95)
