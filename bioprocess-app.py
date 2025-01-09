@@ -240,6 +240,47 @@ with tab5:
             "Foam Control": st.checkbox("Automatic Foam Control", True)
         }
 
+with tab6:
+    st.subheader("Predictive Modeling")
+    
+    uploaded_file = st.file_uploader("Upload Process Data CSV", type=["csv"])
+    
+    if uploaded_file is not None:
+        data = pd.read_csv(uploaded_file)
+        st.write("Data Preview:")
+        st.write(data.head())
+        
+        # Select features and target
+        features = st.multiselect("Select Features", data.columns.tolist())
+        target = st.selectbox("Select Target", data.columns.tolist())
+        
+        if features and target:
+            X = data[features]
+            y = data[target]
+            
+            # Split data into training and testing sets
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+            
+            # Train a simple linear regression model
+            model = LinearRegression()
+            model.fit(X_train, y_train)
+            
+            # Make predictions
+            y_pred_train = model.predict(X_train)
+            y_pred_test = model.predict(X_test)
+            
+            # Display performance metrics
+            st.write("Training Performance:")
+            st.write("R²:", r2_score(y_train, y_pred_train))
+            st.write("MSE:", mean_squared_error(y_train, y_pred_train))
+            
+            st.write("Testing Performance:")
+            st.write("R²:", r2_score(y_test, y_pred_test))
+            st.write("MSE:", mean_squared_error(y_test, y_pred_test))
+            
+            st.write("Model Coefficients:")
+            st.write(pd.Series(model.coef_, index=features))
+            
 # Generate experimental design
 if st.button("Generate Experimental Design"):
     st.subheader("Experimental Design Summary")
