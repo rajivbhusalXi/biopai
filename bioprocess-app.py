@@ -334,10 +334,11 @@ with tab6:
     with col11:
         st.write("Process Data Visualization")
         
-        data_vis = st.selectbox(
+         data_vis = st.selectbox(
             "Select Data Visualization",
             ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"],
             key="data_vis"
+        )
         
         # Data export options
         data_export = st.selectbox(
