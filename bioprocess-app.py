@@ -100,5 +100,4 @@ def configure_process_controls():
     with col5:
         st.write("PID Control Parameters")
         temp_kp = st.number_input("Temperature Kp", 0.0, 100.0, 2.0)
-        temp_ki = st.number_input("Temperature Ki", 0.0, 100.0, 0.5)
-        temp_kd = st.number_input("Temperature Kd", 0.0, 
+        temp_ki = st.number_input("Temperature Ki", 0.0, 100.0, 0
