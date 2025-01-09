@@ -42,7 +42,7 @@ with st.sidebar:
     )
 
 # Main content in tabs
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
     "Process Parameters", 
     "Media Design", 
     "Process Controls",
