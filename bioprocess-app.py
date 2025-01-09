@@ -276,8 +276,8 @@ with col11:
     )
 
 fig = go.Figure()
-        
-        if data_vis == "Time-series Plot":
+
+if data_vis == "Time-series Plot":
             fig.add_trace(go.Scatter(x=[1, 2, 3], y=[10, 20, 30]))
         
         elif data_vis == "Scatter Plot":
