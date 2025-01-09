@@ -270,14 +270,11 @@ with tab6:
         ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"],
         key="data_vis"
     )
-    
-    st.write("Data Export Options")
     data_export = st.selectbox(
         "Select Data Export Format",
         ["CSV", "Excel", "JSON", "PDF"],
-        key="data_export"
-    )
-        
+        key="data_export_unique"
+    )   
         # Plotly figure for data visualization
         fig = go.Figure()
         
