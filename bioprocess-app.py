@@ -374,7 +374,7 @@ with tab7:
             ["All Features", "Recursive Feature Elimination", "Lasso Regression", "Random Forest Feature Importance"]
         )
     
-   with col14:
+    with col14:
         st.write("Model Evaluation")
         evaluation_metrics = st.selectbox(
             "Select Model Evaluation Metric",
