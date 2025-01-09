@@ -325,8 +325,6 @@ with tab6:
             st.write("ARIMA Order: (1,1,1)")
             st.write("Seasonal Decomposition: Additive")
 
-Here's the continuation of the code:
-Python
 with tab6:
     st.subheader("Data Analysis")
     
