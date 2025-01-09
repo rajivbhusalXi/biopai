@@ -117,6 +117,10 @@ with tab1:
             max_value=1000,
             value=168
         )
+        
+        # Additional advanced parameters
+        temperature_control = st.slider("Temperature Control (°C)", min_value=20.0, max_value=45.0, value=37.0, step=0.5)
+        pH_control = st.slider("pH Control", min_value=4.0, max_value=9.0, value=7.2, step=0.1)
 
 with tab2:
     st.subheader("Media Components")
@@ -364,7 +368,31 @@ def simulate_bioprocess(config):
     biomass = np.random.rand(config['duration']) * 100
     glucose = np.random.rand(config['duration']) * 10
     oxygen = np.random.rand(config['duration']) * 100
-    return time, biomass, glucose, oxygen
+    lactate = np.random.rand(config['duration']) * 5
+    ammonia = np.random.rand(config['duration']) * 2
+    return time, biomass, glucose, oxygen, lactate, ammonia
+
+# AI feature to explain simulation results and provide recommendations
+def ai_analysis(biomass, glucose, oxygen, lactate, ammonia):
+    explanation = "The simulation shows the dynamic behavior of biomass, glucose, oxygen, lactate, and ammonia over time."
+    recommendations = []
+
+    if np.mean(biomass) < 50:
+        recommendations.append("Consider optimizing the media composition or feed strategy to improve biomass growth.")
+
+    if np.mean(glucose) < 5:
+        recommendations.append("Glucose levels are low. Increase the glucose concentration in the feed.")
+
+    if np.mean(oxygen) < 50:
+        recommendations.append("Oxygen levels are low. Increase the aeration rate or agitation speed.")
+
+    if np.mean(lactate) > 2:
+        recommendations.append("High lactate levels detected. Check for possible anaerobic conditions and adjust pH or oxygen levels.")
+
+    if np.mean(ammonia) > 1:
+        recommendations.append("High ammonia levels detected. Optimize the nitrogen source or control the pH better.")
+
+    return explanation, recommendations
 
 # Simulate and visualize bioprocess
 if st.button("Simulate Bioprocess"):
@@ -384,14 +412,31 @@ if st.button("Simulate Bioprocess"):
         "data_analysis": data_analysis,
         "safety_features": safety_features
     }
-    time, biomass, glucose, oxygen = simulate_bioprocess(config_data)
+    time, biomass, glucose, oxygen, lactate, ammonia = simulate_bioprocess(config_data)
     
     st.subheader("Bioprocess Simulation Results")
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=time, y=biomass, mode='lines', name='Biomass'))
     fig.add_trace(go.Scatter(x=time, y=glucose, mode='lines', name='Glucose'))
     fig.add_trace(go.Scatter(x=time, y=oxygen, mode='lines', name='Oxygen'))
+    fig.add_trace(go.Scatter(x=time, y=lactate, mode='lines', name='Lactate'))
+    fig.add_trace(go.Scatter(x=time, y=ammonia, mode='lines', name='Ammonia'))
     st.plotly_chart(fig, use_container_width=True)
+
+    # Additional charts
+    fig2 = go.Figure()
+    fig2.add_trace(go.Scatter(x=time, y=biomass, mode='markers', name='Biomass'))
+    fig2.add_trace(go.Scatter(x=time, y=glucose, mode='markers', name='Glucose'))
+    fig2.add_trace(go.Scatter(x=time, y=oxygen, mode='markers', name='Oxygen'))
+    st.plotly_chart(fig2, use_container_width=True)
+
+    # AI Analysis and Recommendations
+    explanation, recommendations = ai_analysis(biomass, glucose, oxygen, lactate, ammonia)
+    st.subheader("AI Analysis")
+    st.write(explanation)
+    st.write("Recommendations:")
+    for rec in recommendations:
+        st.write(f"- {rec}")
 
 # Download configuration as JSON file
 if st.button("Download Configuration"):
