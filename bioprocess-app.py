@@ -335,9 +335,10 @@ with tab6:
         
         # Data visualization options
         data_vis = st.selectbox(
-            "Select Data Visualization",
-            ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"]
-        )
+    "Select Data Visualization",
+    ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"],
+    key="data_vis"
+)
         
         # Data export options
         data_export = st.selectbox(
@@ -349,10 +350,11 @@ with tab6:
         st.write("Statistical Analysis")
         
         # Statistical analysis options
-        stats_analysis = st.selectbox(
-            "Select Statistical Analysis",
-            ["Descriptive Statistics", "Inferential Statistics", "Regression Analysis", "Time-series Analysis"]
-        )
+       stats_analysis = st.selectbox(
+    "Select Statistical Analysis",
+    ["Descriptive Statistics", "Inferential Statistics", "Regression Analysis", "Time-series Analysis"],
+    key="stats_analysis"
+)
         
         # Confidence interval settings
         ci_level = st.number_input("Confidence Interval Level (%)", 50, 100, 95)
@@ -366,10 +368,11 @@ with tab7:
         st.write("Model Selection")
         
         # Machine learning model options
-        ml_model = st.selectbox(
-            "Select Machine Learning Model",
-            ["Linear Regression", "Random Forest", "Support Vector Machine", "Neural Network"]
-        )
+       ml_model = st.selectbox(
+    "Select Machine Learning Model",
+    ["Linear Regression", "Random Forest", "Support Vector Machine", "Neural Network"],
+    key="ml_model"
+)
         
         # Feature selection options
         feature_selection = st.selectbox(
