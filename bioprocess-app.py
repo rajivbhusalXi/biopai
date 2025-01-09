@@ -267,10 +267,11 @@ with tab6:
         st.write("Process Data Visualization")
         
         # Data visualization options
-        data_vis = st.selectbox(
-            "Select Data Visualization",
-            ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"]
-        )
+data_vis = st.selectbox(
+    "Select Data Visualization",
+    ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"],
+    key="data_vis_tab6"
+)
         
         # Data export options
         data_export = st.selectbox(
@@ -333,25 +334,25 @@ with tab6:
     
     with col11:
         st.write("Process Data Visualization")
-        data_vis = st.selectbox(
-            "Select Data Visualization",
-            ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"],
-            key="data_vis"
-        )
+       data_vis = st.selectbox(
+    "Select Data Visualization",
+    ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"],
+    key="data_vis"
+)
                # Data export options
         data_export = st.selectbox(
-            "Select Data Export Format",
-            ["CSV", "Excel", "JSON", "PDF"]
-        )
+    "Select Data Export Format",
+    ["CSV", "Excel", "JSON", "PDF"],
+    key="data_export"
+)
     
     with col12:
         st.write("Statistical Analysis")
-        stats_analysis = st.selectbox(
-            "Select Statistical Analysis",
-            ["Descriptive Statistics", "Inferential Statistics", "Regression Analysis", "Time-series Analysis"],
-            key="stats_analysis"
-        )
-        
+ stats_analysis = st.selectbox(
+    "Select Statistical Analysis",
+    ["Descriptive Statistics", "Inferential Statistics", "Regression Analysis", "Time-series Analysis"],
+    key="stats_analysis"
+)
         # Confidence interval settings
         ci_level = st.number_input("Confidence Interval Level (%)", 50, 100, 95)
 
@@ -362,11 +363,11 @@ with tab7:
     
     with col13:
         st.write("Model Selection")
-        ml_model = st.selectbox(
-            "Select Machine Learning Model",
-            ["Linear Regression", "Random Forest", "Support Vector Machine", "Neural Network"],
-            key="ml_model"
-        )
+      ml_model = st.selectbox(
+    "Select Machine Learning Model",
+    ["Linear Regression", "Random Forest", "Support Vector Machine", "Neural Network"],
+    key="ml_model"
+)
         
         # Feature selection options
         feature_selection = st.selectbox(
@@ -376,11 +377,11 @@ with tab7:
     
     with col14:
         st.write("Model Evaluation")
-        evaluation_metrics = st.selectbox(
-            "Select Model Evaluation Metric",
-            ["Mean Squared Error", "Mean Absolute Error", "R-squared", "Mean Absolute Percentage Error"],
-            key="evaluation_metrics"
-        )
+  evaluation_metrics = st.selectbox(
+    "Select Model Evaluation Metric",
+    ["Mean Squared Error", "Mean Absolute Error", "R-squared", "Mean Absolute Percentage Error"],
+    key="evaluation_metrics"
+)
         
         # Hyperparameter tuning options
         hyperparam_tuning = st.selectbox(
