@@ -362,13 +362,11 @@ with tab7:
     
     with col13:
         st.write("Model Selection")
-        
-        # Machine learning model options
-       ml_model = st.selectbox(
-    "Select Machine Learning Model",
-    ["Linear Regression", "Random Forest", "Support Vector Machine", "Neural Network"],
-    key="ml_model"
-)
+        ml_model = st.selectbox(
+            "Select Machine Learning Model",
+            ["Linear Regression", "Random Forest", "Support Vector Machine", "Neural Network"],
+            key="ml_model"
+        )
         
         # Feature selection options
         feature_selection = st.selectbox(
@@ -376,13 +374,12 @@ with tab7:
             ["All Features", "Recursive Feature Elimination", "Lasso Regression", "Random Forest Feature Importance"]
         )
     
-    with col14:
+   with col14:
         st.write("Model Evaluation")
-        
-        # Model evaluation metrics
         evaluation_metrics = st.selectbox(
             "Select Model Evaluation Metric",
-            ["Mean Squared Error", "Mean Absolute Error", "R-squared", "Mean Absolute Percentage Error"]
+            ["Mean Squared Error", "Mean Absolute Error", "R-squared", "Mean Absolute Percentage Error"],
+            key="evaluation_metrics"
         )
         
         # Hyperparameter tuning options
