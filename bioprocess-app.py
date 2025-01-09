@@ -1,3 +1,6 @@
+Here is the corrected code with proper indentation and other issues fixed:
+
+```python
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -13,12 +16,13 @@ from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 from scipy.stats import norm
+import json
 
 # Set page config
 st.set_page_config(page_title="Bioprocess Designer Pro", layout="wide")
 
 # Title and introduction
-st.title(" Bioprocess Designer Pro")
+st.title("Bioprocess Designer Pro")
 st.markdown("""
 This advanced tool helps bioprocess engineers design and optimize bioprocessing experiments 
 with comprehensive process controls and monitoring strategies.
@@ -262,22 +266,23 @@ with tab6:
     st.subheader("Data Analysis")
     
     col11, col12 = st.columns(2)
-with col11:
-    st.write("Process Data Visualization")
-    data_vis = st.selectbox(
-        "Select Data Visualization",
-        ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"],
-        key="data_vis"
-    )
-    data_export = st.selectbox(
-        "Select Data Export Format",
-        ["CSV", "Excel", "JSON", "PDF"],
-        key="data_export_unique"
-    )
+    
+    with col11:
+        st.write("Process Data Visualization")
+        data_vis = st.selectbox(
+            "Select Data Visualization",
+            ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"],
+            key="data_vis"
+        )
+        data_export = st.selectbox(
+            "Select Data Export Format",
+            ["CSV", "Excel", "JSON", "PDF"],
+            key="data_export_unique"
+        )
 
-fig = go.Figure()
+        fig = go.Figure()
 
-if data_vis == "Time-series Plot":
+        if data_vis == "Time-series Plot":
             fig.add_trace(go.Scatter(x=[1, 2, 3], y=[10, 20, 30]))
         
         elif data_vis == "Scatter Plot":
@@ -322,35 +327,6 @@ if data_vis == "Time-series Plot":
             st.write("ARIMA Order: (1,1,1)")
             st.write("Seasonal Decomposition: Additive")
 
-with tab6:
-    st.subheader("Data Analysis")
-    
-    col11, col12 = st.columns(2)
-    
-    with col11:
-        st.write("Process Data Visualization")
-       data_vis = st.selectbox(
-    "Select Data Visualization",
-    ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"],
-    key="data_vis"
-)
-               # Data export options
-        data_export = st.selectbox(
-    "Select Data Export Format",
-    ["CSV", "Excel", "JSON", "PDF"],
-    key="data_export"
-)
-    
-    with col12:
-        st.write("Statistical Analysis")
- stats_analysis = st.selectbox(
-    "Select Statistical Analysis",
-    ["Descriptive Statistics", "Inferential Statistics", "Regression Analysis", "Time-series Analysis"],
-    key="stats_analysis"
-)
-        # Confidence interval settings
-        ci_level = st.number_input("Confidence Interval Level (%)", 50, 100, 95)
-
 with tab7:
     st.subheader("Machine Learning")
     
@@ -358,11 +334,11 @@ with tab7:
     
     with col13:
         st.write("Model Selection")
-      ml_model = st.selectbox(
-    "Select Machine Learning Model",
-    ["Linear Regression", "Random Forest", "Support Vector Machine", "Neural Network"],
-    key="ml_model"
-)
+        ml_model = st.selectbox(
+            "Select Machine Learning Model",
+            ["Linear Regression", "Random Forest", "Support Vector Machine", "Neural Network"],
+            key="ml_model"
+        )
         
         # Feature selection options
         feature_selection = st.selectbox(
@@ -372,11 +348,11 @@ with tab7:
     
     with col14:
         st.write("Model Evaluation")
-  evaluation_metrics = st.selectbox(
-    "Select Model Evaluation Metric",
-    ["Mean Squared Error", "Mean Absolute Error", "R-squared", "Mean Absolute Percentage Error"],
-    key="evaluation_metrics"
-)
+        evaluation_metrics = st.selectbox(
+            "Select Model Evaluation Metric",
+            ["Mean Squared Error", "Mean Absolute Error", "R-squared", "Mean Absolute Percentage Error"],
+            key="evaluation_metrics"
+        )
         
         # Hyperparameter tuning options
         hyperparam_tuning = st.selectbox(
@@ -411,3 +387,6 @@ if st.button("Download Configuration"):
         file_name="bioprocess_config.json",
         mime="application/json"
     )
+```
+
+I have fixed the indentation issues and corrected the duplicate section for "Data Analysis" in tab6. You can replace your current code with this version.
