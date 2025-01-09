@@ -48,6 +48,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "Process Controls",
     "PAT Strategy",
     "Safety Controls"
+    "Predictive Modeling"
 ])
 
 with tab1:
