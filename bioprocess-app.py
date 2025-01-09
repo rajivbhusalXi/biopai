@@ -357,6 +357,42 @@ with tab7:
             ["Grid Search", "Random Search", "Bayesian Optimization"]
         )
 
+# Function to simulate bioprocess
+def simulate_bioprocess(config):
+    # Simulate process based on configuration (for demonstration purposes, using random data)
+    time = np.arange(0, config['duration'])
+    biomass = np.random.rand(config['duration']) * 100
+    glucose = np.random.rand(config['duration']) * 10
+    oxygen = np.random.rand(config['duration']) * 100
+    return time, biomass, glucose, oxygen
+
+# Simulate and visualize bioprocess
+if st.button("Simulate Bioprocess"):
+    config_data = {
+        "process_type": process_type,
+        "organism_type": organism_type,
+        "scale": scale,
+        "temp_range": temp_range,
+        "ph_range": ph_range,
+        "do_setpoint": do_setpoint,
+        "agitation": agitation,
+        "aeration": aeration,
+        "duration": duration,
+        "feed_control": feed_control,
+        "online_measurements": online_measurements,
+        "sampling_interval": sampling_interval,
+        "data_analysis": data_analysis,
+        "safety_features": safety_features
+    }
+    time, biomass, glucose, oxygen = simulate_bioprocess(config_data)
+    
+    st.subheader("Bioprocess Simulation Results")
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=time, y=biomass, mode='lines', name='Biomass'))
+    fig.add_trace(go.Scatter(x=time, y=glucose, mode='lines', name='Glucose'))
+    fig.add_trace(go.Scatter(x=time, y=oxygen, mode='lines', name='Oxygen'))
+    st.plotly_chart(fig, use_container_width=True)
+
 # Download configuration as JSON file
 if st.button("Download Configuration"):
     config_data = {
