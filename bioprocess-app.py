@@ -3,227 +3,421 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 from datetime import datetime
-from dataclasses import dataclass
-from typing import Dict, Tuple, Optional
-import json
-import base64
-from pathlib import Path
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
-import subprocess
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.svm import SVR
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
+from scipy.stats import norm
 
-# Configuration
-VERSION = "2.1.0"
-CACHE_TTL = 3600  # Cache time to live in seconds
+# Set page config
+st.set_page_config(page_title="Bioprocess Designer Pro", layout="wide")
 
-@dataclass
-class ProcessParameters:
-    """Data class for storing process parameters"""
-    temp_range: Tuple[float, float]
-    ph_range: Tuple[float, float]
-    do_setpoint: float
-    agitation: int
-    aeration: float
-    duration: int
+# Title and introduction
+st.title(" Bioprocess Designer Pro")
+st.markdown("""
+This advanced tool helps bioprocess engineers design and optimize bioprocessing experiments 
+with comprehensive process controls and monitoring strategies.
+""")
 
-    def to_dict(self) -> dict:
-        return {
-            "temp_range": self.temp_range,
-            "ph_range": self.ph_range,
-            "do_setpoint": self.do_setpoint,
-            "agitation": self.agitation,
-            "aeration": self.aeration,
-            "duration": self.duration
-        }
+# Sidebar for process configuration
+with st.sidebar:
+    st.header("Process Configuration")
+    
+    # Process type selection
+    process_type = st.selectbox(
+        "Select Process Type",
+        ["Batch Culture", "Fed-batch Culture", "Continuous Culture", "Perfusion Culture"]
+    )
+    
+    # Organism type
+    organism_type = st.selectbox(
+        "Select Organism Type",
+        ["CHO Cells", "E. coli", "Pichia pastoris", "S. cerevisiae", "HEK293", "Hybridoma"]
+    )
+    
+    # Scale selection
+    scale = st.select_slider(
+        "Select Process Scale",
+        options=["Laboratory (1-10L)", "Pilot (10-100L)", "Production (>100L)"]
+    )
 
-class BioprocessApp:
-    def __init__(self):
-        """Initialize the application with configuration and state management"""
-        self.configure_page()
-        self.load_config()
-        self.initialize_session_state()
+# Main content in tabs
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
+    "Process Parameters", 
+    "Media Design", 
+    "Process Controls",
+    "PAT Strategy",
+    "Safety Controls",
+    "Data Analysis",
+    "Machine Learning"
+])
 
-    def configure_page(self):
-        """Configure Streamlit page settings"""
-        st.set_page_config(
-            page_title="Bioprocess Designer Pro",
-            page_icon="🧬",
-            layout="wide",
-            initial_sidebar_state="expanded"
+with tab1:
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("Basic Parameters")
+        
+        # Temperature settings
+        temp_range = st.slider(
+            "Temperature Range (°C)",
+            min_value=20.0,
+            max_value=45.0,
+            value=(30.0, 37.0),
+            step=0.5
+        )
+        
+        # pH settings
+        ph_range = st.slider(
+            "pH Range",
+            min_value=4.0,
+            max_value=9.0,
+            value=(6.8, 7.2),
+            step=0.1
+        )
+        
+        # Dissolved oxygen
+        do_setpoint = st.slider(
+            "Dissolved Oxygen Setpoint (%)",
+            min_value=20,
+            max_value=100,
+            value=40
+        )
+    
+    with col2:
+        st.subheader("Advanced Parameters")
+        
+        # Agitation settings
+        agitation = st.number_input(
+            "Agitation Speed (RPM)",
+            min_value=50,
+            max_value=1500,
+            value=200
+        )
+        
+        # Aeration rate
+        aeration = st.number_input(
+            "Aeration Rate (vvm)",
+            min_value=0.1,
+            max_value=2.0,
+            value=0.5,
+            step=0.1
+        )
+        
+        # Process duration
+        duration = st.number_input(
+            "Process Duration (hours)",
+            min_value=1,
+            max_value=1000,
+            value=168
         )
 
-    @st.cache_data(ttl=CACHE_TTL)
-    def load_config(self):
-        """Load application configuration with caching"""
-        self.config = {
-            "process_types": ["Batch Culture", "Fed-batch Culture", "Continuous Culture", "Perfusion Culture"],
-            "organisms": {
-                "Mammalian": ["CHO Cells", "HEK293", "Hybridoma"],
-                "Microbial": ["E. coli", "Pichia pastoris", "S. cerevisiae"]
-            },
-            "scales": ["Laboratory (1-10L)", "Pilot (10-100L)", "Production (>100L)"],
-            "base_media": {
-                "Mammalian": ["DMEM", "RPMI", "CD CHO"],
-                "Microbial": ["LB", "TB", "YPD", "Minimal Media"],
-                "Custom": ["Custom"]
-            },
-            "default_parameters": {
-                "CHO Cells": {"temp": (37.0, 37.0), "ph": (7.0, 7.2), "do": 40},
-                "E. coli": {"temp": (30.0, 37.0), "ph": (6.8, 7.2), "do": 30}
-            }
+with tab2:
+    st.subheader("Media Components")
+    
+    col3, col4 = st.columns(2)
+    
+    with col3:
+        # Carbon sources
+        st.write("Carbon Sources (g/L)")
+        glucose_conc = st.number_input("Glucose", 0.0, 100.0, 10.0)
+        glutamine_conc = st.number_input("Glutamine", 0.0, 10.0, 2.0)
+        
+        # Base media selection
+        base_media = st.selectbox(
+            "Select Base Media",
+            ["DMEM", "RPMI", "CD CHO", "LB", "TB", "YPD", "Minimal Media", "Custom"]
+        )
+    
+    with col4:
+        # Additional components
+        st.write("Additional Components")
+        components = {
+            "Yeast Extract": st.checkbox("Yeast Extract", True),
+            "Peptone": st.checkbox("Peptone", True),
+            "Trace Elements": st.checkbox("Trace Elements", True),
+            "Vitamins": st.checkbox("Vitamins", True),
+            "Antifoam": st.checkbox("Antifoam", True)
         }
 
-    def initialize_session_state(self):
-        """Initialize or reset session state variables"""
-        if 'process_history' not in st.session_state:
-            st.session_state.process_history = []
-        if 'current_parameters' not in st.session_state:
-            st.session_state.current_parameters = None
-        if 'warnings' not in st.session_state:
-            st.session_state.warnings = []
-
-    def render_header(self):
-        """Render application header with version and description"""
-        col1, col2 = st.columns([3, 1])
-        with col1:
-            st.title("🧬 Bioprocess Designer Pro")
-            st.markdown("""
-                Advanced bioprocess design and optimization tool for bioprocess engineers.
-                Configure, simulate, and analyze your bioprocessing experiments.
-                """)
-        with col2:
-            st.markdown(f"**Version:** {VERSION}")
-            if st.button("Clear All"):
-                self.initialize_session_state()
-                st.experimental_rerun()
-
-    def get_organism_category(self, organism: str) -> str:
-        """Determine the category of the selected organism"""
-        for category, organisms in self.config["organisms"].items():
-            if organism in organisms:
-                return category
-        return "Custom"
-
-    def render_sidebar(self) -> Dict:
-        """Render sidebar with process configuration options"""
-        with st.sidebar:
-            st.header("Process Configuration")
-
-            # Basic configuration
-            process_type = st.selectbox("Select Process Type", self.config["process_types"])
-
-            # Organism selection with categorization
-            organism_category = st.selectbox("Organism Category", list(self.config["organisms"].keys()))
-            organism_type = st.selectbox(
-                "Select Organism Type",
-                self.config["organisms"][organism_category]
+with tab3:
+    st.subheader("Advanced Process Controls")
+    
+    col5, col6 = st.columns(2)
+    
+    with col5:
+        st.write("PID Control Parameters")
+        
+        # Temperature PID
+        st.write("Temperature Control")
+        temp_kp = st.number_input("Temperature Kp", 0.0, 100.0, 2.0)
+        temp_ki = st.number_input("Temperature Ki", 0.0, 100.0, 0.5)
+        temp_kd = st.number_input("Temperature Kd", 0.0, 100.0, 0.1)
+        
+        # pH PID
+        st.write("pH Control")
+        ph_kp = st.number_input("pH Kp", 0.0, 100.0, 1.0)
+        ph_ki = st.number_input("pH Ki", 0.0, 100.0, 0.2)
+        ph_kd = st.number_input("pH Kd", 0.0, 100.0, 0.05)
+    
+    with col6:
+        st.write("Feed Control Strategy")
+        
+        if process_type in ["Fed-batch Culture", "Perfusion Culture"]:
+            feed_control = st.selectbox(
+                "Feed Control Method",
+                ["Time-based", "pH-stat", "DO-stat", "Glucose-stat", "Exponential", "Specific Growth Rate"]
             )
+            
+            if feed_control == "Exponential":
+                mu_setpoint = st.number_input("Target Specific Growth Rate (h⁻¹)", 0.01, 1.0, 0.1)
+                y_xs = st.number_input("Biomass Yield on Substrate (g/g)", 0.1, 1.0, 0.5)
+            
+            elif feed_control == "Specific Growth Rate":
+                st.write("Growth Rate Control")
+                mu_control = st.checkbox("Enable μ-stat Control", True)
+                if mu_control:
+                    mu_target = st.number_input("Target μ (h⁻¹)", 0.01, 1.0, 0.1)
 
-            # Scale selection
-            scale = st.select_slider("Select Process Scale", options=self.config["scales"])
+with tab4:
+    st.subheader("Process Analytical Technology (PAT)")
+    
+    col7, col8 = st.columns(2)
+    
+    with col7:
+        st.write("Online Measurements")
+        online_measurements = {
+            "Biomass": st.checkbox("Biomass Probe", True),
+            "Glucose": st.checkbox("Glucose Analyzer", True),
+            "Oxygen Uptake": st.checkbox("Off-gas Analysis", True),
+            "Capacitance": st.checkbox("Capacitance Probe", False),
+            "Fluorescence": st.checkbox("Fluorescence Sensor", False)
+        }
+        
+        st.write("Sampling Configuration")
+        sampling_interval = st.number_input(
+            "Sampling Interval (hours)",
+            min_value=0.5,
+            max_value=24.0,
+            value=12.0
+        )
+    
+    with col8:
+        st.write("Data Analysis")
+        data_analysis = {
+            "Real-time OUR": st.checkbox("Calculate OUR/CER", True),
+            "Mass Balance": st.checkbox("Component Mass Balance", True),
+            "Metabolic Rates": st.checkbox("Metabolic Rates", True),
+            "Yield Coefficients": st.checkbox("Yield Coefficients", True)
+        }
 
-            # Save configuration to history
-            config = {
-                "process_type": process_type,
-                "organism_type": organism_type,
-                "scale": scale,
-                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            }
+with tab5:
+    st.subheader("Safety Controls and Alarms")
 
-            if st.button("Save Configuration"):
-                st.session_state.process_history.append(config)
-                st.success("Configuration saved!")
+    col9, col10 = st.columns(2)
 
-            # Show configuration history
-            if st.session_state.process_history:
-                with st.expander("Previous Configurations"):
-                    for i, conf in enumerate(st.session_state.process_history[-3:]):
-                        st.markdown(f"**Configuration {i+1}**")
-                        st.json(conf)
+    with col9:
+        st.write("Critical Alarms")
 
-            return config
+        # Temperature alarms
+        temp_low = st.number_input("Temperature Low Alarm (°C)", 0.0, 50.0, temp_range[0]-2)
+        temp_high = st.number_input("Temperature High Alarm (°C)", 0.0, 50.0, temp_range[1]+2)
 
-    def render_process_parameters(self, organism_type: str) -> ProcessParameters:
-        """Render process parameters input section"""
-        st.subheader("Process Parameters")
+        # pH alarms
+        ph_low = st.number_input("pH Low Alarm", 0.0, 14.0, ph_range[0]-0.5)
+        ph_high = st.number_input("pH High Alarm", 0.0, 14.0, ph_range[1]+0.5)
 
-        # Get default parameters for organism
-        default_params = self.config["default_parameters"].get(
-            organism_type,
-            {"temp": (30.0, 37.0), "ph": (6.8, 7.2), "do": 40}
+        # DO alarm
+        do_low = st.number_input("DO Low Alarm (%)", 0.0, 100.0, 20.0)
+
+        # Alarm notification settings
+        alarm_notification = st.selectbox(
+            "Alarm Notification Method",
+            ["Email", "SMS", "Audible Alert", "Visual Alert"]
         )
 
-        col1, col2 = st.columns(2)
+    with col10:
+        st.write("Safety Interlocks")
 
-        with col1:
-            st.markdown("##### Basic Parameters")
-            temp_range = st.slider(
-                "Temperature Range (°C)",
-                min_value=20.0,
-                max_value=45.0,
-                value=default_params["temp"],
-                step=0.5
-            )
+        safety_features = {
+            "Pressure Relief": st.checkbox("Pressure Relief Valve", True),
+            "Emergency Stop": st.checkbox("Emergency Stop Button", True),
+            "Power Backup": st.checkbox("UPS System", True),
+            "Sterile Filter": st.checkbox("Sterile Filter", True),
+            "Biocontainment": st.checkbox("Biocontainment System", True)
+        }
 
-            ph_range = st.slider(
-                "pH Range",
-                min_value=4.0,
-                max_value=9.0,
-                value=default_params["ph"],
-                step=0.1
-            )
+        # Safety protocol settings
+        safety_protocol = st.selectbox(
+            "Safety Protocol",
+            ["Biosafety Level 1", "Biosafety Level 2", "Biosafety Level 3", "Custom"]
+        )
 
-            do_setpoint = st.slider(
-                "Dissolved Oxygen Setpoint (%)",
-                min_value=20,
-                max_value=100,
-                value=default_params["do"]
-            )
+with tab6:
+    st.subheader("Data Analysis")
+    
+    col11, col12 = st.columns(2)
+    
+    with col11:
+        st.write("Process Data Visualization")
+        
+        # Data visualization options
+        data_vis = st.selectbox(
+            "Select Data Visualization",
+            ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"]
+        )
+        
+        # Data export options
+        data_export = st.selectbox(
+            "Select Data Export Format",
+            ["CSV", "Excel", "JSON", "PDF"]
+        )
+        
+        # Plotly figure for data visualization
+        fig = go.Figure()
+        
+        if data_vis == "Time-series Plot":
+            fig.add_trace(go.Scatter(x=[1, 2, 3], y=[10, 20, 30]))
+        
+        elif data_vis == "Scatter Plot":
+            fig.add_trace(go.Scatter(x=[1, 2, 3], y=[10, 20, 30], mode='markers'))
+        
+        elif data_vis == "Bar Chart":
+            fig.add_trace(go.Bar(x=[1, 2, 3], y=[10, 20, 30]))
+        
+        elif data_vis == "Heatmap":
+            fig.add_trace(go.Heatmap(z=[[10, 20], [30, 40]]))
+        
+        st.plotly_chart(fig, use_container_width=True)
+    
+    with col12:
+        st.write("Statistical Analysis")
+        
+        # Statistical analysis options
+        stats_analysis = st.selectbox(
+            "Select Statistical Analysis",
+            ["Descriptive Statistics", "Inferential Statistics", "Regression Analysis", "Time-series Analysis"]
+        )
+        
+        # Confidence interval settings
+        ci_level = st.number_input("Confidence Interval Level (%)", 50, 100, 95)
+        
+        # Statistical analysis output
+        if stats_analysis == "Descriptive Statistics":
+            st.write("Mean: 20.5")
+            st.write("Median: 20.0")
+            st.write("Standard Deviation: 5.2")
+        
+        elif stats_analysis == "Inferential Statistics":
+            st.write("p-value: 0.01")
+            st.write("t-statistic: 2.5")
+        
+        elif stats_analysis == "Regression Analysis":
+            st.write("R-squared: 0.8")
+            st.write("Coefficient of Determination: 0.7")
+        
+        elif stats_analysis == "Time-series Analysis":
+            st.write("ARIMA Order: (1,1,1)")
+            st.write("Seasonal Decomposition: Additive")
 
-        with col2:
-            st.markdown("##### Advanced Parameters")
-            agitation = st.number_input(
-                "Agitation Speed (RPM)",
-                min_value=50,
-                max_value=1500,
-                value=200,
-                help="Impeller speed for mixing"
-            )
+Here's the continuation of the code:
+Python
+with tab6:
+    st.subheader("Data Analysis")
+    
+    col11, col12 = st.columns(2)
+    
+    with col11:
+        st.write("Process Data Visualization")
+        
+        # Data visualization options
+        data_vis = st.selectbox(
+            "Select Data Visualization",
+            ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"]
+        )
+        
+        # Data export options
+        data_export = st.selectbox(
+            "Select Data Export Format",
+            ["CSV", "Excel", "JSON", "PDF"]
+        )
+    
+    with col12:
+        st.write("Statistical Analysis")
+        
+        # Statistical analysis options
+        stats_analysis = st.selectbox(
+            "Select Statistical Analysis",
+            ["Descriptive Statistics", "Inferential Statistics", "Regression Analysis", "Time-series Analysis"]
+        )
+        
+        # Confidence interval settings
+        ci_level = st.number_input("Confidence Interval Level (%)", 50, 100, 95)
 
-            aeration = st.number_input(
-                "Aeration Rate (vvm)",
-                min_value=0.1,
-                max_value=2.0,
-                value=0.5,
-                step=0.1,
-                help="Volume of air per volume of medium per minute"
-            )
+with tab7:
+    st.subheader("Machine Learning")
+    
+    col13, col14 = st.columns(2)
+    
+    with col13:
+        st.write("Model Selection")
+        
+        # Machine learning model options
+        ml_model = st.selectbox(
+            "Select Machine Learning Model",
+            ["Linear Regression", "Random Forest", "Support Vector Machine", "Neural Network"]
+        )
+        
+        # Feature selection options
+        feature_selection = st.selectbox(
+            "Select Feature Selection Method",
+            ["All Features", "Recursive Feature Elimination", "Lasso Regression", "Random Forest Feature Importance"]
+        )
+    
+    with col14:
+        st.write("Model Evaluation")
+        
+        # Model evaluation metrics
+        evaluation_metrics = st.selectbox(
+            "Select Model Evaluation Metric",
+            ["Mean Squared Error", "Mean Absolute Error", "R-squared", "Mean Absolute Percentage Error"]
+        )
+        
+        # Hyperparameter tuning options
+        hyperparam_tuning = st.selectbox(
+            "Select Hyperparameter Tuning Method",
+            ["Grid Search", "Random Search", "Bayesian Optimization"]
+        )
 
-            duration = st.number_input(
-                "Process Duration (hours)",
-                min_value=1,
-                max_value=1000,
-                value=168,
-                help="Total process runtime"
-            )
-
-        return ProcessParameters(temp_range, ph_range, do_setpoint, agitation, aeration, duration)
-
-    def render_media_design(self, organism_category: str):
-        """Render media design section"""
-        st.subheader("Media Design")
-
-        col1, col2 = st.columns(2)
-
-        with col1:
-            st.markdown("##### Carbon Sources")
-            glucose_conc = st.number_input(
-                "Glucose (g/L)",
-                min_value=0.0,
-                max_value=100.0,
-                value=10.0
-            )
-
-            glutamine_conc = st.number_input(
-                "Glutamine (g/L)",
+# Download configuration as JSON file
+if st.button("Download Configuration"):
+    config_data = {
+        "process_type": process_type,
+        "organism_type": organism_type,
+        "scale": scale,
+        "temp_range": temp_range,
+        "ph_range": ph_range,
+        "do_setpoint": do_setpoint,
+        "agitation": agitation,
+        "aeration": aeration,
+        "duration": duration,
+        "feed_control": feed_control,
+        "online_measurements": online_measurements,
+        "sampling_interval": sampling_interval,
+        "data_analysis": data_analysis,
+        "safety_features": safety_features
+    }
+    
+    config_json = json.dumps(config_data, indent=4)
+    
+    st.download_button(
+        label="Download Configuration",
+        data=config_json,
+        file_name="bioprocess_config.json",
+        mime="application/json"
+    )
