@@ -386,4 +386,4 @@ if st.button("Download Configuration"):
     )
 ```
 
-I have fixed the indentation issues and corrected the duplicate section for "Data Analysis" in tab6. You can replace your current code with this version.
+You can replace your current code with this corrected version.
