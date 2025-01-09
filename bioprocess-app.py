@@ -264,20 +264,19 @@ with tab6:
     col11, col12 = st.columns(2)
     
     with col11:
-        st.write("Process Data Visualization")
-        
-        # Data visualization options
-data_vis = st.selectbox(
-    "Select Data Visualization",
-    ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"],
-    key="data_vis_tab6"
-)
-        
-        # Data export options
-        data_export = st.selectbox(
-            "Select Data Export Format",
-            ["CSV", "Excel", "JSON", "PDF"]
-        )
+    st.write("Process Data Visualization")
+    data_vis = st.selectbox(
+        "Select Data Visualization",
+        ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"],
+        key="data_vis"
+    )
+    
+    st.write("Data Export Options")
+    data_export = st.selectbox(
+        "Select Data Export Format",
+        ["CSV", "Excel", "JSON", "PDF"],
+        key="data_export"
+    )
         
         # Plotly figure for data visualization
         fig = go.Figure()
