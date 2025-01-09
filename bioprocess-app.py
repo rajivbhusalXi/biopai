@@ -1,6 +1,3 @@
-Here is the corrected code with proper indentation and other issues fixed:
-
-```python
 import streamlit as st
 import pandas as pd
 import numpy as np
