@@ -16,6 +16,9 @@ from scipy.stats import norm
 from Bio import SeqIO
 import json
 import graphviz
+from diagrams import Diagram, Cluster
+from diagrams.custom import Custom
+from PIL import Image
 
 # Define the ai_analyze_bioreactor function here
 def ai_analyze_bioreactor(bioreactor, components):
@@ -31,56 +34,54 @@ def ai_analyze_bioreactor(bioreactor, components):
     return analysis, recommendations
 
 def generate_bioreactor_diagram(selected_bioreactor, components):
-    st.subheader("Bioreactor Flow Diagram")
-    st.write(f"Generating flow diagram for {selected_bioreactor} with the following components:")
+    st.subheader("Bioreactor Flowchart")
+    st.write(f"Generating flowchart for {selected_bioreactor} with the following components:")
 
-    dot = graphviz.Digraph(format='png')
-    dot.attr(size='12,12')  # Increase the size of the diagram
+    with Diagram("Bioreactor Flowchart", show=False) as diag:
+        main_components = components["Main Components"]
+        sensing_components = components["Sensing and Control Components"]
+        aeration_components = components["Aeration and Mixing Components"]
+        feeding_components = components["Feeding and Harvesting Components"]
+        support_components = components["Support Components"]
+        optional_components = components["Optional Components"]
 
-    # Define main nodes
-    main_components = components["Main Components"]
-    sensing_components = components["Sensing and Control Components"]
-    aeration_components = components["Aeration and Mixing Components"]
-    feeding_components = components["Feeding and Harvesting Components"]
-    support_components = components["Support Components"]
-    optional_components = components["Optional Components"]
+        # Add nodes based on component selection
+        nodes = {}
+        for category, items in components.items():
+            with Cluster(category):
+                for component, selected in items.items():
+                    if selected:
+                        nodes[component] = Custom(component, "./icons/default.png")
+                        st.write(f"- {component}")
 
-    # Add nodes and edges based on component selection
-    for category, items in components.items():
-        with dot.subgraph(name=f'cluster_{category}') as c:
-            c.attr(label=category)
-            for component, selected in items.items():
-                if selected:
-                    c.node(component)
-                    st.write(f"- {component}")
+        # Example of dynamic connections for a bioreactor
+        if "Vessel" in nodes:
+            if "Lid/Headplate" in nodes:
+                nodes["Lid/Headplate"] >> nodes["Vessel"]
+            if "Impeller/Agitator" in nodes:
+                nodes["Impeller/Agitator"] >> nodes["Vessel"]
+            if "pH Sensor" in nodes:
+                nodes["pH Sensor"] >> nodes["Vessel"]
+            if "Temperature Sensor" in nodes:
+                nodes["Temperature Sensor"] >> nodes["Vessel"]
+            if "Dissolved Oxygen (DO) Sensor" in nodes:
+                nodes["Dissolved Oxygen (DO) Sensor"] >> nodes["Vessel"]
+            if "Control Unit" in nodes:
+                nodes["Control Unit"] >> nodes["Vessel"]
+            if "Sparger" in nodes:
+                nodes["Sparger"] >> nodes["Vessel"]
+            if "Aeration System" in nodes:
+                nodes["Aeration System"] >> nodes["Sparger"]
+            if "Feed Pump" in nodes:
+                nodes["Feed Pump"] >> nodes["Vessel"]
+            if "Harvest Pump" in nodes:
+                nodes["Vessel"] >> nodes["Harvest Pump"]
+            if "Base Plate" in nodes:
+                nodes["Vessel"] >> nodes["Base Plate"]
 
-    # Example of dynamic connections for a bioreactor
-    if main_components["Vessel"]:
-        dot.node("Vessel")
-        if main_components["Lid/Headplate"]:
-            dot.edge("Lid/Headplate", "Vessel")
-        if main_components["Impeller/Agitator"]:
-            dot.edge("Impeller/Agitator", "Vessel")
-        if sensing_components["pH Sensor"]:
-            dot.edge("pH Sensor", "Vessel")
-        if sensing_components["Temperature Sensor"]:
-            dot.edge("Temperature Sensor", "Vessel")
-        if sensing_components["Dissolved Oxygen (DO) Sensor"]:
-            dot.edge("Dissolved Oxygen (DO) Sensor", "Vessel")
-        if sensing_components["Control Unit"]:
-            dot.edge("Control Unit", "Vessel")
-        if aeration_components["Sparger"]:
-            dot.edge("Sparger", "Vessel")
-        if aeration_components["Aeration System"]:
-            dot.edge("Aeration System", "Sparger")
-        if feeding_components["Feed Pump"]:
-            dot.edge("Feed Pump", "Vessel")
-        if feeding_components["Harvest Pump"]:
-            dot.edge("Vessel", "Harvest Pump")
-        if support_components["Base Plate"]:
-            dot.edge("Vessel", "Base Plate")
-
-    st.graphviz_chart(dot)
+    diag_path = "bioreactor_flowchart.png"
+    diag.render(diag_path)
+    st.image(diag_path)
 
 # Set page config
 st.set_page_config(page_title="Bioprocess Designer Pro", layout="wide")
