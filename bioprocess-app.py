@@ -270,7 +270,7 @@ if st.button("Generate Bioreactor"):
 elif page == 'Media Creator':
     st.subheader("Media Creator")
     st.write("Configure your media components and adjust for volume")
-
+    
     with st.form("media_form"):
         volume = st.number_input("Total Volume (L)", min_value=0.1, step=0.1)
 
@@ -309,23 +309,32 @@ elif page == 'Media Creator':
 
         # Additional Supplements
         st.write("Additional Supplements")
-        additional_supplements = st.multiselect("Select Additional Supplements", [
-            "Fetal Bovine Serum (FBS)", "Penicillin-Streptomycin", "L-Glutamine", "Non-Essential Amino Acids (NEAA)",
-            "Sodium Pyruvate", "Hepes Buffer", "Growth Factors"
-        ])
+        fbs = st.number_input("Fetal Bovine Serum (FBS) (mL/L)", 0.0, 100.0, 10.0)
+        penicillin_streptomycin = st.number_input("Penicillin-Streptomycin (mL/L)", 0.0, 100.0, 10.0)
+        l_glutamine = st.number_input("L-Glutamine (mM)", 0.0, 100.0, 2.0)
+        neaa = st.number_input("Non-Essential Amino Acids (NEAA) (mM)", 0.0, 100.0, 1.0)
+        sodium_pyruvate = st.number_input("Sodium Pyruvate (mM)", 0.0, 100.0, 1.0)
+        hepes_buffer = st.number_input("Hepes Buffer (mM)", 0.0, 100.0, 25.0)
+        growth_factors = st.text_area("Growth Factors", "EGF, FGF, IGF")
 
         # Submit button
         submitted = st.form_submit_button("Generate Media Recipe")
 
         if submitted:
             st.success(f"Media recipe generated for {volume} L")
-            st.write(f"Basal Media: {basal_media} (Volume: {volume} L)")
-            st.write(f"Serum-Free Media: {serum_free_media} (Volume: {volume} L)")
-            st.write(f"Specialty Media: {specialty_media} (Volume: {volume} L)")
-            st.write(f"Biomass Production Media: {biomass_production_media} (Volume: {volume} L)")
-            st.write(f"Biotherapeutics Production Media: {biotherapeutics_production_media} (Volume: {volume} L)")
-            for supplement in additional_supplements:
-                st.write(f"{supplement}: Volume to add (mL/L) * {volume}")
+            st.write(f"Basal Media: {basal_media}")
+            st.write(f"Serum-Free Media: {serum_free_media}")
+            st.write(f"Specialty Media: {specialty_media}")
+            st.write(f"Biomass Production Media: {biomass_production_media}")
+            st.write(f"Biotherapeutics Production Media: {biotherapeutics_production_media}")
+            st.write(f"Fetal Bovine Serum (FBS): {fbs * volume} mL")
+            st.write(f"Penicillin-Streptomycin: {penicillin_streptomycin * volume} mL")
+            st.write(f"L-Glutamine: {l_glutamine * volume} mM")
+            st.write(f"Non-Essential Amino Acids (NEAA): {neaa * volume} mM")
+            st.write(f"Sodium Pyruvate: {sodium_pyruvate * volume} mM")
+            st.write(f"Hepes Buffer: {hepes_buffer * volume} mM")
+            st.write(f"Growth Factors: {growth_factors}")
+
 elif page == 'Bioprocess Simulator':
     st.subheader("Bioprocess Simulator")
 
