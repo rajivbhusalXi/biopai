@@ -145,11 +145,25 @@ components = {
     }
 }
 
-# Add this code in the 'Bioreactor Selector' section (below the previous code)
+if "selected_bioreactor" in st.session_state and "components" in st.session_state:
+    analysis, recommendations = ai_analyze_bioreactor(st.session_state["selected_bioreactor"], st.session_state["components"])
+    st.subheader("AI Analysis")
+    st.write(analysis)
+    st.write("Recommendations:")
+    for rec in recommendations:
+        st.write(f"- {rec}")
+
 if st.button("Confirm Bioreactor"):
     st.success(f"Bioreactor {selected_bioreactor} confirmed with components: {', '.join([k for k, v in components.items() if v])}")
     st.session_state["selected_bioreactor"] = selected_bioreactor
     st.session_state["components"] = components
+
+# Add the "Generate Bioreactor" button
+if st.button("Generate Bioreactor"):
+    if "selected_bioreactor" in st.session_state and "components" in st.session_state:
+        generate_bioreactor_diagram(st.session_state["selected_bioreactor"], st.session_state["components"])
+    else:
+        st.error("Please confirm the bioreactor settings first.")
 
 elif page == 'Media Creator':
     st.subheader("Media Creator")
@@ -470,6 +484,15 @@ def ai_analyze_bioreactor(bioreactor, components):
 
     return analysis, recommendations
 
+def generate_bioreactor_diagram(selected_bioreactor, components):
+    st.subheader("Bioreactor Flow Diagram")
+    st.write(f"Generating flow diagram for {selected_bioreactor} with the following components:")
+    for category, items in components.items():
+        st.write(f"**{category}**")
+        for component, selected in items.items():
+            if selected:
+                st.write(f"- {component}")
+                
 # Add this code in the 'Bioprocess Simulator' section to trigger AI analysis (below the simulation results code)
 if "selected_bioreactor" in st.session_state and "components" in st.session_state:
     analysis, recommendations = ai_analyze_bioreactor(st.session_state["selected_bioreactor"], st.session_state["components"])
