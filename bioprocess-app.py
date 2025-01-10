@@ -30,8 +30,6 @@ def ai_analyze_bioreactor(bioreactor, components):
 
     return analysis, recommendations
 
-dot.attr(size='24,24')  # Increase the size of the diagram
-
 st.markdown("""
 <style>
 .draggable {
@@ -73,7 +71,7 @@ def generate_bioreactor_diagram(selected_bioreactor, components):
     st.write(f"Generating flow diagram for {selected_bioreactor} with the following components:")
 
     dot = graphviz.Digraph(format='png')
-    dot.attr(size='12,12')  # Increase the size of the diagram
+    dot.attr(size='24,24')  # Increase the size of the diagram
 
     # Define main nodes
     main_components = components["Main Components"]
@@ -119,7 +117,7 @@ def generate_bioreactor_diagram(selected_bioreactor, components):
             dot.edge("Vessel", "Base Plate")
 
     st.graphviz_chart(dot)
-
+    
 # Replace the existing function in your bioprocess-app.py file with the above function.
 
 # Set page config
