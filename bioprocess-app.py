@@ -121,11 +121,7 @@ def generate_bioreactor_diagram(selected_bioreactor, components):
             dot.edge("Vessel", "Base Plate")
 
     st.graphviz_chart(dot)
-    
-# Replace the existing function in your bioprocess-app.py file with the above function.
 
-# Set page config
-st.set_page_config(page_title="Bioprocess Designer Pro", layout="wide")
 
 # Title and introduction
 st.title("Bioprocess Designer Pro")
