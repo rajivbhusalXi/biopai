@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 </script>
 """, unsafe_allow_html=True)
+
 def generate_bioreactor_diagram(selected_bioreactor, components):
     st.subheader("Bioreactor Flow Diagram")
     st.write(f"Generating flow diagram for {selected_bioreactor} with the following components:")
@@ -172,8 +173,7 @@ page = st.selectbox('Select Page', ['Bioreactor Selector', 'Media Creator', 'Bio
 
 if page == 'Bioreactor Selector':
     st.subheader("Bioreactor Selector")
-    # Add content for Bioreactor Selector page here
-# Add this code in the 'Bioreactor Selector' section (below line 70)
+ 
 bioreactors = {
     "Stirred Tank Bioreactors": [
         "Glass bioreactors: Suitable for small-scale applications, often used in research and development.",
@@ -205,7 +205,6 @@ bioreactors = {
 selected_bioreactor_type = st.selectbox("Select Bioreactor Type", list(bioreactors.keys()))
 selected_bioreactor = st.selectbox("Select Bioreactor", bioreactors[selected_bioreactor_type])
 
-# Add this code in the 'Bioreactor Selector' section (below the previous code)
 # Replace the existing components dictionary with this code (line 105)
 components = {
     "Main Components": {
@@ -276,6 +275,81 @@ elif page == 'Media Creator':
 elif page == 'Bioprocess Simulator':
     st.subheader("Bioprocess Simulator")
 
+if page == 'Bioreactor Selector':
+    st.subheader("Bioreactor Selector")
+
+    bioreactors = {
+        "Stirred Tank Bioreactors": [
+            "Glass bioreactors: Suitable for small-scale applications, often used in research and development.",
+            "Stainless steel bioreactors: Robust and corrosion-resistant, commonly used in industrial-scale applications.",
+            "Single-use bioreactors: Disposable bioreactors made from plastic or other materials, often used in biopharmaceutical applications."
+        ],
+        "Packed Bed Bioreactors": [
+            "Fixed bed bioreactors: Used for solid-phase catalysis and enzymatic reactions.",
+            "Fluidized bed bioreactors: Used for applications requiring high mass transfer rates."
+        ],
+        "Membrane Bioreactors": [
+            "Microfiltration/Ultrafiltration (MF/UF) bioreactors: Used for cell culture, protein separation, and wastewater treatment.",
+            "Dialysis bioreactors: Used for cell culture, protein separation, and medical applications."
+        ],
+        "Photo-Bioreactors": [
+            "Flat panel photobioreactors: Used for algae cultivation and photosynthetic bioprocesses.",
+            "Tubular photobioreactors: Used for large-scale algae cultivation and photosynthetic bioprocesses."
+        ],
+        "Wave-Induced Motion Bioreactors": [
+            "Wave bioreactors: Used for cell culture, tissue engineering, and bioprocess development."
+        ],
+        "Other Bioreactors": [
+            "Airlift bioreactors: Used for cell culture, bioremediation, and wastewater treatment.",
+            "Perfusion bioreactors: Used for cell culture, tissue engineering, and bioprocess development.",
+            "Rotating wall vessel bioreactors: Used for cell culture, tissue engineering, and bioprocess development."
+        ]
+    }
+
+    selected_bioreactor_type = st.selectbox("Select Bioreactor Type", list(bioreactors.keys()))
+    selected_bioreactor = st.selectbox("Select Bioreactor", bioreactors[selected_bioreactor_type])
+
+    components = {
+        "Main Components": {
+            "Vessel": st.checkbox("Vessel: The main container of the bioreactor, made from materials like glass, stainless steel, or plastic.", True),
+            "Lid/Headplate": st.checkbox("Lid/Headplate: The top part of the bioreactor, providing access for sampling, feeding, and monitoring.", True),
+            "Impeller/Agitator": st.checkbox("Impeller/Agitator: Mixes the culture medium, ensuring uniform distribution of nutrients and temperature.", True)
+        },
+        "Sensing and Control Components": {
+            "pH Sensor": st.checkbox("pH Sensor: Monitors the acidity/basicity of the culture medium.", True),
+            "Temperature Sensor": st.checkbox("Temperature Sensor: Monitors the temperature of the culture medium.", True),
+            "Dissolved Oxygen (DO) Sensor": st.checkbox("Dissolved Oxygen (DO) Sensor: Monitors the oxygen levels in the culture medium.", True),
+            "Conductivity Sensor": st.checkbox("Conductivity Sensor: Monitors the conductivity of the culture medium.", True),
+            "Control Unit": st.checkbox("Control Unit: Regulates parameters like pH, temperature, and DO to maintain optimal conditions.", True)
+        },
+        "Aeration and Mixing Components": {
+            "Sparger": st.checkbox("Sparger: Introduces air or gas into the culture medium.", True),
+            "Aeration System": st.checkbox("Aeration System: Provides a consistent supply of air or gas to the bioreactor.", True),
+            "Baffles": st.checkbox("Baffles: Enhances mixing and reduces vortex formation.", True),
+            "Impeller Blades": st.checkbox("Impeller Blades: Mixes the culture medium, ensuring uniform distribution of nutrients and temperature.", True),
+            "Impeller Stirrers": st.checkbox("Impeller stirrer: Uses an impeller (a rotating blade or paddle) to mix the culture medium.", False),
+            "Anchor Stirrers": st.checkbox("Anchor stirrer: Uses a large, anchor-shaped blade to mix the culture medium.", False),
+            "Helical Stirrers": st.checkbox("Helical stirrer: Uses a helical-shaped blade to mix the culture medium.", False),
+            "Turbine Stirrers": st.checkbox("Turbine stirrer: Uses a turbine-shaped blade to mix the culture medium.", False)
+        },
+        "Feeding and Harvesting Components": {
+            "Feed Pump": st.checkbox("Feed Pump: Delivers nutrients or other substances to the bioreactor.", True),
+            "Harvest Pump": st.checkbox("Harvest Pump: Removes the biomass or product from the bioreactor.", True),
+            "Sampling Port": st.checkbox("Sampling Port: Allows for aseptic sampling of the culture medium.", True),
+            "Exhaust System": st.checkbox("Exhaust System: Removes waste gases and vapors from the bioreactor.", True)
+        },
+        "Support Components": {
+            "Base Plate": st.checkbox("Base Plate: Provides a stable foundation for the bioreactor.", True),
+            "Support Legs": st.checkbox("Support Legs: Elevates the bioreactor, ensuring easy access and maintenance.", True),
+            "Cable Management": st.checkbox("Cable Management: Organizes cables and tubing, reducing clutter and improving safety.", True)
+        },
+        "Optional Components": {
+            "Biomass Sensor": st.checkbox("Biomass Sensor: Monitors the biomass concentration in the culture medium.", False),
+            "Nutrient Sensors": st.checkbox("Nutrient Sensors: Monitors the levels of specific nutrients in the culture medium.", False),
+            "Gas Analyzer": st.checkbox("Gas Analyzer: Analyzes the composition of gases in the bioreactor.", False),
+            "Automated Sampling System": st.checkbox("Automated Sampling System: Enables automated sampling and analysis of the culture medium.", False)
+        }
+    }
     # Existing content moved to Bioprocess Simulator tab
     tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
         "Process Parameters", 
