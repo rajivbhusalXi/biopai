@@ -15,7 +15,6 @@ import matplotlib.pyplot as plt
 from scipy.stats import norm
 from Bio import SeqIO
 import json
-import graphviz
 from diagrams import Diagram, Cluster
 from diagrams.custom import Custom
 from PIL import Image
