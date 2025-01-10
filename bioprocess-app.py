@@ -35,8 +35,17 @@ def generate_bioreactor_diagram(selected_bioreactor, components):
     st.write(f"Generating flow diagram for {selected_bioreactor} with the following components:")
 
     dot = graphviz.Digraph(format='png')
-    dot.attr(size='10,10')
+    dot.attr(size='12,12')  # Increase the size of the diagram
 
+    # Define main nodes
+    main_components = components["Main Components"]
+    sensing_components = components["Sensing and Control Components"]
+    aeration_components = components["Aeration and Mixing Components"]
+    feeding_components = components["Feeding and Harvesting Components"]
+    support_components = components["Support Components"]
+    optional_components = components["Optional Components"]
+
+    # Add nodes and edges based on component selection
     for category, items in components.items():
         with dot.subgraph(name=f'cluster_{category}') as c:
             c.attr(label=category)
@@ -45,14 +54,34 @@ def generate_bioreactor_diagram(selected_bioreactor, components):
                     c.node(component)
                     st.write(f"- {component}")
 
-    # Add connections between components
-    component_list = [component for category, items in components.items() for component, selected in items.items() if selected]
-    for i in range(len(component_list) - 1):
-        dot.edge(component_list[i], component_list[i + 1])
+    # Example of dynamic connections for a bioreactor
+    if main_components["Vessel"]:
+        dot.node("Vessel")
+        if main_components["Lid/Headplate"]:
+            dot.edge("Lid/Headplate", "Vessel")
+        if main_components["Impeller/Agitator"]:
+            dot.edge("Impeller/Agitator", "Vessel")
+        if sensing_components["pH Sensor"]:
+            dot.edge("pH Sensor", "Vessel")
+        if sensing_components["Temperature Sensor"]:
+            dot.edge("Temperature Sensor", "Vessel")
+        if sensing_components["Dissolved Oxygen (DO) Sensor"]:
+            dot.edge("Dissolved Oxygen (DO) Sensor", "Vessel")
+        if sensing_components["Control Unit"]:
+            dot.edge("Control Unit", "Vessel")
+        if aeration_components["Sparger"]:
+            dot.edge("Sparger", "Vessel")
+        if aeration_components["Aeration System"]:
+            dot.edge("Aeration System", "Sparger")
+        if feeding_components["Feed Pump"]:
+            dot.edge("Feed Pump", "Vessel")
+        if feeding_components["Harvest Pump"]:
+            dot.edge("Vessel", "Harvest Pump")
+        if support_components["Base Plate"]:
+            dot.edge("Vessel", "Base Plate")
 
     st.graphviz_chart(dot)
 
-# Replace the existing function in your bioprocess-app.py file with the above function.
 # Set page config
 st.set_page_config(page_title="Bioprocess Designer Pro", layout="wide")
 
