@@ -30,8 +30,44 @@ def ai_analyze_bioreactor(bioreactor, components):
 
     return analysis, recommendations
 
-import graphviz
+dot.attr(size='24,24')  # Increase the size of the diagram
 
+st.markdown("""
+<style>
+.draggable {
+    position: absolute;
+    cursor: move;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+    const element = document.querySelector('.element-container');
+    let isMouseDown = false;
+    let offset = [0, 0];
+    
+    element.addEventListener('mousedown', (event) => {
+        isMouseDown = true;
+        offset = [
+            element.offsetLeft - event.clientX,
+            element.offsetTop - event.clientY
+        ];
+    }, true);
+    
+    document.addEventListener('mouseup', () => {
+        isMouseDown = false;
+    }, true);
+    
+    document.addEventListener('mousemove', (event) => {
+        event.preventDefault();
+        if (isMouseDown) {
+            element.style.left = (event.clientX + offset[0]) + 'px';
+            element.style.top = (event.clientY + offset[1]) + 'px';
+        }
+    }, true);
+});
+</script>
+""", unsafe_allow_html=True)
 def generate_bioreactor_diagram(selected_bioreactor, components):
     st.subheader("Bioreactor Flow Diagram")
     st.write(f"Generating flow diagram for {selected_bioreactor} with the following components:")
