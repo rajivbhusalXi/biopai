@@ -8,5 +8,4 @@ matplotlib
 scipy
 biopython
 graphviz
-Diagram
-Cluster
+diagrams
