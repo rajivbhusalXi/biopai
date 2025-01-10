@@ -265,7 +265,7 @@ elif page == 'Bioprocess Simulator':
 
             # pH alarms
             ph_low = st.number_input("pH Low Alarm", 0.0, 14.0, ph_range[0]-0.5)
-            ph_high = st.number_input("pH High Alarm", 0.0, 14.0, ph range[1]+0.5)
+            ph_high = st.number_input("pH High Alarm", 0.0, 14.0, ph_range[1]+0.5)
 
             # DO alarm
             do_low = st.number_input("DO Low Alarm (%)", 0.0, 100.0, 20.0)
@@ -454,6 +454,7 @@ elif page == 'Bioprocess Simulator':
         fig.add_trace(go.Scatter(x=time, y=ammonia, mode='lines', name='Ammonia'))
         fig.update_layout(title='Bioprocess Simulation Results', xaxis_title='Time (hours)', yaxis_title='Concentration')
         st.plotly_chart(fig, use_container_width=True)
+
         
         # Additional charts
         charts = [
