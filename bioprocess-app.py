@@ -470,13 +470,12 @@ elif page == 'Bioprocess Simulator':
             ("Lactate vs Ammonia", lactate, ammonia)
         ]
 
-    
     for title, y1, y2 in charts:
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=time, y=y1, mode='lines', name=title.split(' vs ')[0]))
-    fig.add_trace(go.Scatter(x=time, y=y2, mode='lines', name=title.split(' vs ')[1]))
-    fig.update_layout(title=title, xaxis_title='Time (hours)', yaxis_title='Concentration')
-    st.plotly_chart(fig, use_container_width=True)
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=time, y=y1, mode='lines', name=title.split(' vs ')[0]))
+        fig.add_trace(go.Scatter(x=time, y=y2, mode='lines', name=title.split(' vs ')[1]))
+        fig.update_layout(title=title, xaxis_title='Time (hours)', yaxis_title='Concentration')
+        st.plotly_chart(fig, use_container_width=True)
 
     # AI Analysis and Recommendations
     explanation, recommendations = ai_analysis(biomass, glucose, oxygen, lactate, ammonia)
