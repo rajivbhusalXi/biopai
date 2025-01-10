@@ -474,14 +474,16 @@ if "selected_bioreactor" in st.session_state and "components" in st.session_stat
     st.write("Recommendations:")
     for rec in recommendations:
         st.write(f"- {rec}")
-        
-        with col14:
-            st.write("Model Evaluation")
-            evaluation_metrics = st.selectbox(
-                "Select Model Evaluation Metric",
-                ["Mean Squared Error", "Mean Absolute Error", "R-squared", "Mean Absolute Percentage Error"],
-                key="evaluation_metrics"
-            )
+
+col13, col14 = st.columns(2)
+
+with col14:
+    st.write("Model Evaluation")
+    evaluation_metrics = st.selectbox(
+        "Select Model Evaluation Metric",
+        ["Mean Squared Error", "Mean Absolute Error", "R-squared", "Mean Absolute Percentage Error"],
+        key="evaluation_metrics"
+    )
             
             # Hyperparameter tuning options
             hyperparam_tuning = st.selectbox(
