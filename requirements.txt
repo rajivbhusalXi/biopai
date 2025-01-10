@@ -8,6 +8,5 @@ matplotlib
 scipy
 biopython
 graphviz
-Diagram
-Cluster
+Diagram, Cluster
 image
