@@ -30,6 +30,12 @@ with comprehensive process controls and monitoring strategies.
 with st.sidebar:
     st.header("Process Configuration")
     
+    # Process selection
+    process_stage = st.selectbox(
+        "Select Process Stage",
+        ["Upstream", "Downstream"]
+    )
+    
     # Process type selection
     process_type = st.selectbox(
         "Select Process Type",
@@ -47,6 +53,15 @@ with st.sidebar:
         "Select Process Scale",
         options=["Laboratory (1-10L)", "Pilot (10-100L)", "Production (>100L)"]
     )
+    
+    # Approval checkbox
+    approve_settings = st.checkbox("Approve Settings")
+
+    if approve_settings:
+        st.info("You have approved the settings.")
+
+        if st.button("Confirm Settings"):
+            st.success("Settings confirmed!")
 
 # Main content in tabs
 tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
@@ -398,6 +413,7 @@ def ai_analysis(biomass, glucose, oxygen, lactate, ammonia):
 # Simulate and visualize bioprocess
 if st.button("Simulate Bioprocess"):
     config_data = {
+        "process_stage": process_stage,
         "process_type": process_type,
         "organism_type": organism_type,
         "scale": scale,
