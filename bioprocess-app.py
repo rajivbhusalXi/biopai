@@ -484,12 +484,12 @@ with col14:
         ["Mean Squared Error", "Mean Absolute Error", "R-squared", "Mean Absolute Percentage Error"],
         key="evaluation_metrics"
     )
-            
-            # Hyperparameter tuning options
-            hyperparam_tuning = st.selectbox(
-                "Select Hyperparameter Tuning Method",
-                ["Grid Search", "Random Search", "Bayesian Optimization"]
-            )
+    
+    # Correct the indentation of this line
+    hyperparam_tuning = st.selectbox(
+        "Select Hyperparameter Tuning Method",
+        ["Grid Search", "Random Search", "Bayesian Optimization"]
+    )
 
     # Function to simulate bioprocess
     def simulate_bioprocess(config):
