@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 from scipy.stats import norm
 from Bio import SeqIO
 import json
+import graphviz
 
 # Define the ai_analyze_bioreactor function here
 def ai_analyze_bioreactor(bioreactor, components):
@@ -29,15 +30,22 @@ def ai_analyze_bioreactor(bioreactor, components):
 
     return analysis, recommendations
 
-# Define the generate_bioreactor_diagram function here
+# Update the generate_bioreactor_diagram function here
 def generate_bioreactor_diagram(selected_bioreactor, components):
     st.subheader("Bioreactor Flow Diagram")
     st.write(f"Generating flow diagram for {selected_bioreactor} with the following components:")
+
+    dot = graphviz.Digraph()
+
     for category, items in components.items():
-        st.write(f"**{category}**")
-        for component, selected in items.items():
-            if selected:
-                st.write(f"- {component}")
+        with dot.subgraph(name=f'cluster_{category}') as c:
+            c.attr(label=category)
+            for component, selected in items.items():
+                if selected:
+                    c.node(component)
+                    st.write(f"- {component}")
+
+    st.graphviz_chart(dot)
 
 # Set page config
 st.set_page_config(page_title="Bioprocess Designer Pro", layout="wide")
