@@ -116,12 +116,16 @@ components = {
         "Conductivity Sensor": st.checkbox("Conductivity Sensor: Monitors the conductivity of the culture medium.", True),
         "Control Unit": st.checkbox("Control Unit: Regulates parameters like pH, temperature, and DO to maintain optimal conditions.", True)
     },
-    "Aeration and Mixing Components": {
-        "Sparger": st.checkbox("Sparger: Introduces air or gas into the culture medium.", True),
-        "Aeration System": st.checkbox("Aeration System: Provides a consistent supply of air or gas to the bioreactor.", True),
-        "Baffles": st.checkbox("Baffles: Enhances mixing and reduces vortex formation.", True),
-        "Impeller Blades": st.checkbox("Impeller Blades: Mixes the culture medium, ensuring uniform distribution of nutrients and temperature.", True)
-    },
+"Aeration and Mixing Components": {
+    "Sparger": st.checkbox("Sparger: Introduces air or gas into the culture medium.", True),
+    "Aeration System": st.checkbox("Aeration System: Provides a consistent supply of air or gas to the bioreactor.", True),
+    "Baffles": st.checkbox("Baffles: Enhances mixing and reduces vortex formation.", True),
+    "Impeller Blades": st.checkbox("Impeller Blades: Mixes the culture medium, ensuring uniform distribution of nutrients and temperature.", True),
+    "Impeller Stirrers": st.checkbox("Impeller stirrer: Uses an impeller (a rotating blade or paddle) to mix the culture medium.", False),
+    "Anchor Stirrers": st.checkbox("Anchor stirrer: Uses a large, anchor-shaped blade to mix the culture medium.", False),
+    "Helical Stirrers": st.checkbox("Helical stirrer: Uses a helical-shaped blade to mix the culture medium.", False),
+    "Turbine Stirrers": st.checkbox("Turbine stirrer: Uses a turbine-shaped blade to mix the culture medium.", False)
+},
     "Feeding and Harvesting Components": {
         "Feed Pump": st.checkbox("Feed Pump: Delivers nutrients or other substances to the bioreactor.", True),
         "Harvest Pump": st.checkbox("Harvest Pump: Removes the biomass or product from the bioreactor.", True),
