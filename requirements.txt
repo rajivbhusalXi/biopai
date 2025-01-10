@@ -7,5 +7,4 @@ scikit-learn
 matplotlib
 scipy
 biopython
-graphviz
 diagrams
