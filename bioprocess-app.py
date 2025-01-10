@@ -30,12 +30,12 @@ def ai_analyze_bioreactor(bioreactor, components):
 
     return analysis, recommendations
 
-# Update the generate_bioreactor_diagram function here
 def generate_bioreactor_diagram(selected_bioreactor, components):
     st.subheader("Bioreactor Flow Diagram")
     st.write(f"Generating flow diagram for {selected_bioreactor} with the following components:")
 
-    dot = graphviz.Digraph()
+    dot = graphviz.Digraph(format='png')
+    dot.attr(size='10,10')
 
     for category, items in components.items():
         with dot.subgraph(name=f'cluster_{category}') as c:
@@ -45,8 +45,14 @@ def generate_bioreactor_diagram(selected_bioreactor, components):
                     c.node(component)
                     st.write(f"- {component}")
 
+    # Add connections between components
+    component_list = [component for category, items in components.items() for component, selected in items.items() if selected]
+    for i in range(len(component_list) - 1):
+        dot.edge(component_list[i], component_list[i + 1])
+
     st.graphviz_chart(dot)
 
+# Replace the existing function in your bioprocess-app.py file with the above function.
 # Set page config
 st.set_page_config(page_title="Bioprocess Designer Pro", layout="wide")
 
