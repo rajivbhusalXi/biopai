@@ -407,7 +407,7 @@ if st.button("Simulate Bioprocess"):
         "agitation": agitation,
         "aeration": aeration,
         "duration": duration,
-        "feed_control": feed_control,
+        "feed_control": feed_control if 'feed_control' in locals() else None,
         "online_measurements": online_measurements,
         "sampling_interval": sampling_interval,
         "data_analysis": data_analysis,
