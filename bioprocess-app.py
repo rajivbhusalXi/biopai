@@ -69,6 +69,53 @@ page = st.selectbox('Select Page', ['Bioreactor Selector', 'Media Creator', 'Bio
 if page == 'Bioreactor Selector':
     st.subheader("Bioreactor Selector")
     # Add content for Bioreactor Selector page here
+# Add this code in the 'Bioreactor Selector' section (below line 70)
+bioreactors = {
+    "Stirred Tank Bioreactors": [
+        "Glass bioreactors: Suitable for small-scale applications, often used in research and development.",
+        "Stainless steel bioreactors: Robust and corrosion-resistant, commonly used in industrial-scale applications.",
+        "Single-use bioreactors: Disposable bioreactors made from plastic or other materials, often used in biopharmaceutical applications."
+    ],
+    "Packed Bed Bioreactors": [
+        "Fixed bed bioreactors: Used for solid-phase catalysis and enzymatic reactions.",
+        "Fluidized bed bioreactors: Used for applications requiring high mass transfer rates."
+    ],
+    "Membrane Bioreactors": [
+        "Microfiltration/Ultrafiltration (MF/UF) bioreactors: Used for cell culture, protein separation, and wastewater treatment.",
+        "Dialysis bioreactors: Used for cell culture, protein separation, and medical applications."
+    ],
+    "Photo-Bioreactors": [
+        "Flat panel photobioreactors: Used for algae cultivation and photosynthetic bioprocesses.",
+        "Tubular photobioreactors: Used for large-scale algae cultivation and photosynthetic bioprocesses."
+    ],
+    "Wave-Induced Motion Bioreactors": [
+        "Wave bioreactors: Used for cell culture, tissue engineering, and bioprocess development."
+    ],
+    "Other Bioreactors": [
+        "Airlift bioreactors: Used for cell culture, bioremediation, and wastewater treatment.",
+        "Perfusion bioreactors: Used for cell culture, tissue engineering, and bioprocess development.",
+        "Rotating wall vessel bioreactors: Used for cell culture, tissue engineering, and bioprocess development."
+    ]
+}
+
+selected_bioreactor_type = st.selectbox("Select Bioreactor Type", list(bioreactors.keys()))
+selected_bioreactor = st.selectbox("Select Bioreactor", bioreactors[selected_bioreactor_type])
+
+# Add this code in the 'Bioreactor Selector' section (below the previous code)
+components = {
+    "Stirrer": st.checkbox("Stirrer", True),
+    "Temperature Control": st.checkbox("Temperature Control", True),
+    "pH Control": st.checkbox("pH Control", True),
+    "Dissolved Oxygen Control": st.checkbox("Dissolved Oxygen Control", True),
+    "Sampling Port": st.checkbox("Sampling Port", True),
+    "Anti-foam Control": st.checkbox("Anti-foam Control", True)
+}
+
+# Add this code in the 'Bioreactor Selector' section (below the previous code)
+if st.button("Confirm Bioreactor"):
+    st.success(f"Bioreactor {selected_bioreactor} confirmed with components: {', '.join([k for k, v in components.items() if v])}")
+    st.session_state["selected_bioreactor"] = selected_bioreactor
+    st.session_state["components"] = components
 
 elif page == 'Media Creator':
     st.subheader("Media Creator")
@@ -376,6 +423,27 @@ elif page == 'Bioprocess Simulator':
                 "Select Feature Selection Method",
                 ["All Features", "Recursive Feature Elimination", "Lasso Regression", "Random Forest Feature Importance"]
             )
+        # Add this function in the 'Bioprocess Simulator' section (below line 425)
+def ai_analyze_bioreactor(bioreactor, components):
+    analysis = f"Analyzing {bioreactor} with components: {', '.join([k for k, v in components.items() if v])}."
+    recommendations = []
+
+    if "Stirrer" not in components or not components["Stirrer"]:
+        recommendations.append("Consider adding a Stirrer for improved mixing.")
+    if "Temperature Control" not in components or not components["Temperature Control"]:
+        recommendations.append("Temperature Control is recommended for maintaining optimal conditions.")
+    # Add more analysis based on bioreactor type and components
+
+    return analysis, recommendations
+
+# Add this code in the 'Bioprocess Simulator' section to trigger AI analysis (below the simulation results code)
+if "selected_bioreactor" in st.session_state and "components" in st.session_state:
+    analysis, recommendations = ai_analyze_bioreactor(st.session_state["selected_bioreactor"], st.session_state["components"])
+    st.subheader("AI Analysis")
+    st.write(analysis)
+    st.write("Recommendations:")
+    for rec in recommendations:
+        st.write(f"- {rec}")
         
         with col14:
             st.write("Model Evaluation")
