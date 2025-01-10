@@ -269,7 +269,7 @@ if st.button("Generate Bioreactor"):
         
 elif page == 'Media Creator':
     st.subheader("Media Creator")
-st.write("Configure your media components and adjust for volume")
+    st.write("Configure your media components and adjust for volume")
 
     with st.form("media_form"):
         volume = st.number_input("Total Volume (L)", min_value=0.1, step=0.1)
