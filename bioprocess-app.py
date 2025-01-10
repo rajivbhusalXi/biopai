@@ -164,7 +164,7 @@ if st.button("Generate Bioreactor"):
         generate_bioreactor_diagram(st.session_state["selected_bioreactor"], st.session_state["components"])
     else:
         st.error("Please confirm the bioreactor settings first.")
-
+        
 elif page == 'Media Creator':
     st.subheader("Media Creator")
     # Add content for Media Creator page here
