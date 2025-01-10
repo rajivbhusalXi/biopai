@@ -171,7 +171,7 @@ with st.sidebar:
 # Main content in tabs
 page = st.selectbox('Select Page', ['Bioreactor Selector', 'Media Creator', 'Bioprocess Simulator', 'Integration'])
 
-if page == 'Bioreactor Selector':
+elif page == 'Bioreactor Selector':
     st.subheader("Bioreactor Selector")
 bioreactors = {
     "Stirred Tank Bioreactors": [
