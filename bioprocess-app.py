@@ -18,6 +18,7 @@ import json
 from diagrams import Diagram, Cluster
 from diagrams.custom import Custom
 from PIL import Image
+import graphicviz
 
 # Define the ai_analyze_bioreactor function here
 def ai_analyze_bioreactor(bioreactor, components):
