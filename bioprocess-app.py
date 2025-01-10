@@ -173,7 +173,6 @@ page = st.selectbox('Select Page', ['Bioreactor Selector', 'Media Creator', 'Bio
 
 if page == 'Bioreactor Selector':
     st.subheader("Bioreactor Selector")
- 
 bioreactors = {
     "Stirred Tank Bioreactors": [
         "Glass bioreactors: Suitable for small-scale applications, often used in research and development.",
