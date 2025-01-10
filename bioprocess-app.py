@@ -424,59 +424,58 @@ elif page == 'Bioprocess Simulator':
 
         return explanation, recommendations
 
-    # Simulate and visualize bioprocess
-    if st.button("Simulate Bioprocess"):
-        config_data = {
-            "process_stage": process_stage,
-            "process_type": process_type,
-            "organism_type": organism_type,
-            "scale": scale,
-            "temp_range": temp_range,
-            "ph_range": ph_range,
-            "do_setpoint": do_setpoint,
-            "agitation": agitation,
-            "aeration": aeration,
-            "duration": duration,
-            "feed_control": feed_control if 'feed_control' in locals() else None,
-            "online_measurements": online_measurements,
-            "sampling_interval": sampling_interval,
-            "data_analysis": data_analysis,
-            "safety_features": safety_features
-        }
-        time, biomass, glucose, oxygen, lactate, ammonia = simulate_bioprocess(config_data)
-        
-        st.subheader("Bioprocess Simulation Results")
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x=time, y=biomass, mode='lines', name='Biomass'))
-        fig.add_trace(go.Scatter(x=time, y=glucose, mode='lines', name='Glucose'))
-        fig.add_trace(go.Scatter(x=time, y=oxygen, mode='lines', name='Oxygen'))
-        fig.add_trace(go.Scatter(x=time, y=lactate, mode='lines', name='Lactate'))
-        fig.add_trace(go.Scatter(x=time, y=ammonia, mode='lines', name='Ammonia'))
-        fig.update_layout(title='Bioprocess Simulation Results', xaxis_title='Time (hours)', yaxis_title='Concentration')
-        st.plotly_chart(fig, use_container_width=True)
-
-        
-       # Ensure charts is defined properly before the loop
-charts = [
-    ("Biomass vs Glucose", biomass, glucose),
-    ("Biomass vs Oxygen", biomass, oxygen),
-    ("Biomass vs Lactate", biomass, lactate),
-    ("Biomass vs Ammonia", biomass, ammonia),
-    ("Glucose vs Oxygen", glucose, oxygen),
-    ("Glucose vs Lactate", glucose, lactate),
-    ("Glucose vs Ammonia", glucose, ammonia),
-    ("Oxygen vs Lactate", oxygen, lactate),
-    ("Oxygen vs Ammonia", oxygen, ammonia),
-    ("Lactate vs Ammonia", lactate, ammonia)
-]
-
-# Loop through charts and plot them
-for title, y1, y2 in charts:
+    # Ensure charts is defined properly before the loop
+if st.button("Simulate Bioprocess"):
+    config_data = {
+        "process_stage": process_stage,
+        "process_type": process_type,
+        "organism_type": organism_type,
+        "scale": scale,
+        "temp_range": temp_range,
+        "ph_range": ph_range,
+        "do_setpoint": do_setpoint,
+        "agitation": agitation,
+        "aeration": aeration,
+        "duration": duration,
+        "feed_control": feed_control if 'feed_control' in locals() else None,
+        "online_measurements": online_measurements,
+        "sampling_interval": sampling_interval,
+        "data_analysis": data_analysis,
+        "safety_features": safety_features
+    }
+    time, biomass, glucose, oxygen, lactate, ammonia = simulate_bioprocess(config_data)
+    
+    st.subheader("Bioprocess Simulation Results")
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=time, y=y1, mode='lines', name=title.split(' vs ')[0]))
-    fig.add_trace(go.Scatter(x=time, y=y2, mode='lines', name=title.split(' vs ')[1]))
-    fig.update_layout(title=title, xaxis_title='Time (hours)', yaxis_title='Concentration')
+    fig.add_trace(go.Scatter(x=time, y=biomass, mode='lines', name='Biomass'))
+    fig.add_trace(go.Scatter(x=time, y=glucose, mode='lines', name='Glucose'))
+    fig.add_trace(go.Scatter(x=time, y=oxygen, mode='lines', name='Oxygen'))
+    fig.add_trace(go.Scatter(x=time, y=lactate, mode='lines', name='Lactate'))
+    fig.add_trace(go.Scatter(x=time, y=ammonia, mode='lines', name='Ammonia'))
+    fig.update_layout(title='Bioprocess Simulation Results', xaxis_title='Time (hours)', yaxis_title='Concentration')
     st.plotly_chart(fig, use_container_width=True)
+
+    # Define charts variable here
+    charts = [
+        ("Biomass vs Glucose", biomass, glucose),
+        ("Biomass vs Oxygen", biomass, oxygen),
+        ("Biomass vs Lactate", biomass, lactate),
+        ("Biomass vs Ammonia", biomass, ammonia),
+        ("Glucose vs Oxygen", glucose, oxygen),
+        ("Glucose vs Lactate", glucose, lactate),
+        ("Glucose vs Ammonia", glucose, ammonia),
+        ("Oxygen vs Lactate", oxygen, lactate),
+        ("Oxygen vs Ammonia", oxygen, ammonia),
+        ("Lactate vs Ammonia", lactate, ammonia)
+    ]
+
+    # Loop through charts and plot them
+    for title, y1, y2 in charts:
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=time, y=y1, mode='lines', name=title.split(' vs ')[0]))
+        fig.add_trace(go.Scatter(x=time, y=y2, mode='lines', name=title.split(' vs ')[1]))
+        fig.update_layout(title=title, xaxis_title='Time (hours)', yaxis_title='Concentration')
+        st.plotly_chart(fig, use_container_width=True)
 
     # AI Analysis and Recommendations
     explanation, recommendations = ai_analysis(biomass, glucose, oxygen, lactate, ammonia)
