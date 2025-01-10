@@ -456,26 +456,27 @@ elif page == 'Bioprocess Simulator':
         st.plotly_chart(fig, use_container_width=True)
 
         
-        # Additional charts
-        charts = [
-            ("Biomass vs Glucose", biomass, glucose),
-            ("Biomass vs Oxygen", biomass, oxygen),
-            ("Biomass vs Lactate", biomass, lactate),
-            ("Biomass vs Ammonia", biomass, ammonia),
-            ("Glucose vs Oxygen", glucose, oxygen),
-            ("Glucose vs Lactate", glucose, lactate),
-            ("Glucose vs Ammonia", glucose, ammonia),
-            ("Oxygen vs Lactate", oxygen, lactate),
-            ("Oxygen vs Ammonia", oxygen, ammonia),
-            ("Lactate vs Ammonia", lactate, ammonia)
-        ]
+       # Ensure charts is defined properly before the loop
+charts = [
+    ("Biomass vs Glucose", biomass, glucose),
+    ("Biomass vs Oxygen", biomass, oxygen),
+    ("Biomass vs Lactate", biomass, lactate),
+    ("Biomass vs Ammonia", biomass, ammonia),
+    ("Glucose vs Oxygen", glucose, oxygen),
+    ("Glucose vs Lactate", glucose, lactate),
+    ("Glucose vs Ammonia", glucose, ammonia),
+    ("Oxygen vs Lactate", oxygen, lactate),
+    ("Oxygen vs Ammonia", oxygen, ammonia),
+    ("Lactate vs Ammonia", lactate, ammonia)
+]
 
-    for title, y1, y2 in charts:
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x=time, y=y1, mode='lines', name=title.split(' vs ')[0]))
-        fig.add_trace(go.Scatter(x=time, y=y2, mode='lines', name=title.split(' vs ')[1]))
-        fig.update_layout(title=title, xaxis_title='Time (hours)', yaxis_title='Concentration')
-        st.plotly_chart(fig, use_container_width=True)
+# Loop through charts and plot them
+for title, y1, y2 in charts:
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=time, y=y1, mode='lines', name=title.split(' vs ')[0]))
+    fig.add_trace(go.Scatter(x=time, y=y2, mode='lines', name=title.split(' vs ')[1]))
+    fig.update_layout(title=title, xaxis_title='Time (hours)', yaxis_title='Concentration')
+    st.plotly_chart(fig, use_container_width=True)
 
     # AI Analysis and Recommendations
     explanation, recommendations = ai_analysis(biomass, glucose, oxygen, lactate, ammonia)
