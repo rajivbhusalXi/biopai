@@ -1,4 +1,6 @@
 import streamlit as st
+st.set_page_config(page_title="Bioprocess Designer Pro", layout="wide")
+
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
@@ -29,6 +31,8 @@ def ai_analyze_bioreactor(bioreactor, components):
     # Add more analysis based on bioreactor type and components
 
     return analysis, recommendations
+
+# Continue with the rest of your code...
 
 st.markdown("""
 <style>
