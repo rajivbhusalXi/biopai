@@ -255,11 +255,11 @@ with tabs[0]:
         st.session_state["selected_bioreactor"] = selected_bioreactor
         st.session_state["components"] = components
 
-    if st.button("Generate Bioreactor"):
-        if "selected_bioreactor" in st.session_state and "components" in st.session_state:
-            generate_bioreactor_diagram(st.session_state["selected_bioreactor"], st.session_state["components"])
-        else:
-            st.error("Please confirm the bioreactor settings first.")
+    if st.button("Generate Bioreactor Flow"):
+    if "selected_bioreactor" in st.session_state and "components" in st.session_state:
+        generate_bioreactor_diagram(st.session_state["selected_bioreactor"], st.session_state["components"])
+    else:
+        st.error("Please confirm the bioreactor settings first.")
 
 with tabs[1]:
     st.subheader("Media Creator")
