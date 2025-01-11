@@ -375,38 +375,39 @@ with tabs[2]:
                 value=40
             )
         
-        with col2:
-            st.subheader("Advanced Parameters")
-            
-     # Agitation settings
-agitation = st.number_input(
-    "Agitation Speed (RPM)",
-    min_value=50,
-    max_value=1500,
-    value=200
-)
-
-# Aeration rate
-aeration = st.number_input(
-    "Aeration Rate (vvm)",
-    min_value=0.1,
-    max_value=2.0,
-    value=0.5,
-    step=0.1
-)
-
-# Process duration
-duration = st.number_input(
-    "Process Duration (hours)",
-    min_value=1,
-    max_value=1000,
-    value=168
-)
-
-# Additional advanced parameters
-temperature_control = st.slider("Temperature Control (°C)", min_value=20.0, max_value=45.0, value=37.0, step=0.5)
+with col2:
+    st.subheader("Advanced Parameters")
+    
+    # Agitation settings
+    agitation = st.number_input(
+        "Agitation Speed (RPM)",
+        min_value=50,
+        max_value=1500,
+        value=200
+    )
+    
+    # Aeration rate
+    aeration = st.number_input(
+        "Aeration Rate (vvm)",
+        min_value=0.1,
+        max_value=2.0,
+        value=0.5,
+        step=0.1
+    )
+    
+    # Process duration
+    duration = st.number_input(
+        "Process Duration (hours)",
+        min_value=1,
+        max_value=1000,
+        value=168
+    )
+    
+    # Additional advanced parameters
+    temperature_control = st.slider("Temperature Control (°C)", min_value=20.0, max_value=45.0, value=37.0, step=0.5)
+    pH_control = st.slider("pH Control", min_value=4.0, max_value=9.0, value=7.2, step=0.1)37.0, step=0.5)
 pH_control = st.slider("pH Control", min_value=4.0, max_value=9.0, value=7.2, step=0.1)
-
+  
 with tab2:
     st.subheader("Media Components")
     
