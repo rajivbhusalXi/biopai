@@ -407,348 +407,345 @@ with tabs[2]:
             temperature_control = st.slider("Temperature Control (°C)", min_value=20.0, max_value=45.0, value=37.0, step=0.5)
             pH_control = st.slider("pH Control", min_value=4.0, max_value=9.0, value=7.2, step=0.1)
 
-        # Function to simulate bioprocess
-        def simulate_bioprocess(config):
-            # Simulate process based on configuration (for demonstration purposes, using random data)
-            time = np.arange(0, config['duration'])
-            biomass = np.random.rand(config['duration']) * 100
-            glucose = np.random.rand(config['duration']) * 10
-            oxygen = np.random.rand(config['duration']) * 100
-            lactate = np.random.rand(config['duration']) * 5
-            ammonia = np.random.rand(config['duration']) * 2
-            return time, biomass, glucose, oxygen, lactate, ammonia
+# Function to simulate bioprocess
+            def simulate_bioprocess(config):
+                # Simulate process based on configuration (for demonstration purposes, using random data)
+                time = np.arange(0, config['duration'])
+                biomass = np.random.rand(config['duration']) * 100
+                glucose = np.random.rand(config['duration']) * 10
+                oxygen = np.random.rand(config['duration']) * 100
+                lactate = np.random.rand(config['duration']) * 5
+                ammonia = np.random.rand(config['duration']) * 2
+                return time, biomass, glucose, oxygen, lactate, ammonia
 
-        # AI feature to explain simulation results and provide recommendations
-        def ai_analysis(biomass, glucose, oxygen, lactate, ammonia):
-            explanation = "The simulation shows the dynamic behavior of biomass, glucose, oxygen, lactate, and ammonia over time."
-            recommendations = []
+            # AI feature to explain simulation results and provide recommendations
+            def ai_analysis(biomass, glucose, oxygen, lactate, ammonia):
+                explanation = "The simulation shows the dynamic behavior of biomass, glucose, oxygen, lactate, and ammonia over time."
+                recommendations = []
 
-            if np.mean(biomass) < 50:
-                recommendations.append("Consider optimizing the media composition or feed strategy to improve biomass growth.")
-            if np.mean(glucose) < 5:
-                recommendations.append("Glucose levels are low. Increase the glucose concentration in the feed.")
-            if np.mean(oxygen) < 50:
-                recommendations.append("Oxygen levels are low. Increase the aeration rate or agitation speed.")
-            if np.mean(lactate) > 2:
-                recommendations.append("High lactate levels detected. Check for possible anaerobic conditions and adjust pH or oxygen levels.")
-            if np.mean(ammonia) > 1:
-                recommendations.append("High ammonia levels detected. Optimize the nitrogen source or control the pH better.")
+                if np.mean(biomass) < 50:
+                    recommendations.append("Consider optimizing the media composition or feed strategy to improve biomass growth.")
+                if np.mean(glucose) < 5:
+                    recommendations.append("Glucose levels are low. Increase the glucose concentration in the feed.")
+                if np.mean(oxygen) < 50:
+                    recommendations.append("Oxygen levels are low. Increase the aeration rate or agitation speed.")
+                if np.mean(lactate) > 2:
+                    recommendations.append("High lactate levels detected. Check for possible anaerobic conditions and adjust pH or oxygen levels.")
+                if np.mean(ammonia) > 1:
+                    recommendations.append("High ammonia levels detected. Optimize the nitrogen source or control the pH better.")
 
-            return explanation, recommendations
+                return explanation, recommendations
 
-        if st.button("Simulate Bioprocess"):
-            config_data = {
-                "temp_range": temp_range,
-                "ph_range": ph_range,
-                "do_setpoint": do_setpoint,
-                "agitation": agitation,
-                "aeration": aeration,
-                "duration": duration,
-                "temperature_control": temperature_control,
-                "pH_control": pH_control
-            }
-            time, biomass, glucose, oxygen, lactate, ammonia = simulate_bioprocess(config_data)
+            if st.button("Simulate Bioprocess"):
+                config_data = {
+                    "temp_range": temp_range,
+                    "ph_range": ph_range,
+                    "do_setpoint": do_setpoint,
+                    "agitation": agitation,
+                    "aeration": aeration,
+                    "duration": duration,
+                    "temperature_control": temperature_control,
+                    "pH_control": pH_control
+                }
+                time, biomass, glucose, oxygen, lactate, ammonia = simulate_bioprocess(config_data)
 
-            st.subheader("Bioprocess Simulation Results")
-            fig = go.Figure()
-            fig.add_trace(go.Scatter(x=time, y=biomass, mode='lines', name='Biomass'))
-            fig.add_trace(go.Scatter(x=time, y=glucose, mode='lines', name='Glucose'))
-            fig.add_trace(go.Scatter(x=time, y=oxygen, mode='lines', name='Oxygen'))
-            fig.add_trace(go.Scatter(x=time, y=lactate, mode='lines', name='Lactate'))
-            fig.add_trace(go.Scatter(x=time, y=ammonia, mode='lines', name='Ammonia'))
-            fig.update_layout(title='Bioprocess Simulation Results', xaxis_title='Time (hours)', yaxis_title='Concentration')
-            st.plotly_chart(fig, use_container_width=True)
-
-            charts = [
-                ("Biomass vs Glucose", biomass, glucose),
-                ("Biomass vs Oxygen", biomass, oxygen),
-                ("Biomass vs Lactate", biomass, lactate),
-                ("Biomass vs Ammonia", biomass, ammonia),
-                ("Glucose vs Oxygen", glucose, oxygen),
-                ("Glucose vs Lactate", glucose, lactate),
-                ("Glucose vs Ammonia", glucose, ammonia),
-                ("Oxygen vs Lactate", oxygen, lactate),
-                ("Oxygen vs Ammonia", oxygen, ammonia),
-                ("Lactate vs Ammonia", lactate, ammonia)
-            ]
-
-            for title, y1, y2 in charts:
+                st.subheader("Bioprocess Simulation Results")
                 fig = go.Figure()
-                fig.add_trace(go.Scatter(x=time, y=y1, mode='lines', name=title.split(' vs ')[0]))
-                fig.add_trace(go.Scatter(x=time, y=y2, mode='lines', name=title.split(' vs ')[1]))
-                fig.update_layout(title=title, xaxis_title='Time (hours)', yaxis_title='Concentration')
+                fig.add_trace(go.Scatter(x=time, y=biomass, mode='lines', name='Biomass'))
+                fig.add_trace(go.Scatter(x=time, y=glucose, mode='lines', name='Glucose'))
+                fig.add_trace(go.Scatter(x=time, y=oxygen, mode='lines', name='Oxygen'))
+                fig.add_trace(go.Scatter(x=time, y=lactate, mode='lines', name='Lactate'))
+                fig.add_trace(go.Scatter(x=time, y=ammonia, mode='lines', name='Ammonia'))
+                fig.update_layout(title='Bioprocess Simulation Results', xaxis_title='Time (hours)', yaxis_title='Concentration')
                 st.plotly_chart(fig, use_container_width=True)
 
-            explanation, recommendations = ai_analysis(biomass, glucose, oxygen, lactate, ammonia)
-            st.subheader("AI Analysis")
-            st.write(explanation)
-            st.write("Recommendations:")
-            for rec in recommendations:
-                st.write(f"- {rec}")
+                charts = [
+                    ("Biomass vs Glucose", biomass, glucose),
+                    ("Biomass vs Oxygen", biomass, oxygen),
+                    ("Biomass vs Lactate", biomass, lactate),
+                    ("Biomass vs Ammonia", biomass, ammonia),
+                    ("Glucose vs Oxygen", glucose, oxygen),
+                    ("Glucose vs Lactate", glucose, lactate),
+                    ("Glucose vs Ammonia", glucose, ammonia),
+                    ("Oxygen vs Lactate", oxygen, lactate),
+                    ("Oxygen vs Ammonia", oxygen, ammonia),
+                    ("Lactate vs Ammonia", lactate, ammonia)
+                ]
 
-        if st.button("Download Configuration"):
-            config_data = {
-                "process_type": process_type,
-                "organism_type": organism_type,
-                "scale": scale,
-                "temp_range": temp_range,
-                "ph_range": ph_range,
-                "do_setpoint": do_setpoint,
-                "agitation": agitation,
-                "aeration": aeration,
-                "duration": duration,
-                "feed_control": feed_control,
-                "online_measurements": online_measurements,
-                "sampling_interval": sampling_interval,
-                "data_analysis": data_analysis,
-                "safety_features": safety_features
-            }
-            
-            config_json = json.dumps(config_data, indent=4)
-            
-            st.download_button(
-                label="Download Configuration",
-                data=config_json,
-                file_name="bioprocess_config.json",
-                mime="application/json"
-            )
+                for title, y1, y2 in charts:
+                    fig = go.Figure()
+                    fig.add_trace(go.Scatter(x=time, y=y1, mode='lines', name=title.split(' vs ')[0]))
+                    fig.add_trace(go.Scatter(x=time, y=y2, mode='lines', name=title.split(' vs ')[1]))
+                    fig.update_layout(title=title, xaxis_title='Time (hours)', yaxis_title='Concentration')
+                    st.plotly_chart(fig, use_container_width=True)
 
-    with tab2:
-        st.subheader("Media Components")
-        
-        col3, col4 = st.columns(2)
-        
-        with col3:
-            # Carbon sources
-            st.write("Carbon Sources (g/L)")
-            glucose_conc = st.number_input("Glucose", 0.0, 100.0, 10.0)
-            glutamine_conc = st.number_input("Glutamine", 0.0, 10.0, 2.0)
-            
-            # Base media selection
-            base_media = st.selectbox(
-                "Select Base Media",
-                ["DMEM", "RPMI", "CD CHO", "LB", "TB", "YPD", "Minimal Media", "Custom"]
-            )
-        
-        with col4:
-            # Additional components
-            st.write("Additional Components")
-            components = {
-                "Yeast Extract": st.checkbox("Yeast Extract", True),
-                "Peptone": st.checkbox("Peptone", True),
-                "Trace Elements": st.checkbox("Trace Elements", True),
-                "Vitamins": st.checkbox("Vitamins", True),
-                "Antifoam": st.checkbox("Antifoam", True)
-            }
+                explanation, recommendations = ai_analysis(biomass, glucose, oxygen, lactate, ammonia)
+                st.subheader("AI Analysis")
+                st.write(explanation)
+                st.write("Recommendations:")
+                for rec in recommendations:
+                    st.write(f"- {rec}")
 
-    with tab3:
-        st.subheader("Advanced Process Controls")
-        
-        col5, col6 = st.columns(2)
-        
-        with col5:
-            st.write("PID Control Parameters")
+            if st.button("Download Configuration"):
+                config_data = {
+                    "process_type": process_type,
+                    "organism_type": organism_type,
+                    "scale": scale,
+                    "temp_range": temp_range,
+                    "ph_range": ph_range,
+                    "do_setpoint": do_setpoint,
+                    "agitation": agitation,
+                    "aeration": aeration,
+                    "duration": duration,
+                    "feed_control": feed_control,
+                    "online_measurements": online_measurements,
+                    "sampling_interval": sampling_interval,
+                    "data_analysis": data_analysis,
+                    "safety_features": safety_features
+                }
+                config_json = json.dumps(config_data, indent=4)
+
+                st.download_button(
+                    label="Download Configuration",
+                    data=config_json,
+                    file_name="bioprocess_config.json",
+                    mime="application/json"
+                )
+
+        with tab2:
+            st.subheader("Media Components")
             
-            # Temperature PID
-            st.write("Temperature Control")
-            temp_kp = st.number_input("Temperature Kp", 0.0, 100.0, 2.0)
-            temp_ki = st.number_input("Temperature Ki", 0.0, 100.0, 0.5)
-            temp_kd = st.number_input("Temperature Kd", 0.0, 100.0, 0.1)
+            col3, col4 = st.columns(2)
             
-            # pH PID
-            st.write("pH Control")
-            ph_kp = st.number_input("pH Kp", 0.0, 100.0, 1.0)
-            ph_ki = st.number_input("pH Ki", 0.0, 100.0, 0.2)
-            ph_kd = st.number_input("pH Kd", 0.0, 100.0, 0.05)
-        
-        with col6:
-            st.write("Feed Control Strategy")
+            with col3:
+                # Carbon sources
+                st.write("Carbon Sources (g/L)")
+                glucose_conc = st.number_input("Glucose", 0.0, 100.0, 10.0)
+                glutamine_conc = st.number_input("Glutamine", 0.0, 10.0, 2.0)
+                
+                # Base media selection
+                base_media = st.selectbox(
+                    "Select Base Media",
+                    ["DMEM", "RPMI", "CD CHO", "LB", "TB", "YPD", "Minimal Media", "Custom"]
+                )
             
-            if process_type in ["Fed-batch Culture", "Perfusion Culture"]:
-                feed_control = st.selectbox(
-                    "Feed Control Method",
-                    ["Time-based", "pH-stat", "DO-stat", "Glucose-stat", "Exponential", "Specific Growth Rate"]
+            with col4:
+                # Additional components
+                st.write("Additional Components")
+                components = {
+                    "Yeast Extract": st.checkbox("Yeast Extract", True),
+                    "Peptone": st.checkbox("Peptone", True),
+                    "Trace Elements": st.checkbox("Trace Elements", True),
+                    "Vitamins": st.checkbox("Vitamins", True),
+                    "Antifoam": st.checkbox("Antifoam", True)
+                }
+
+        with tab3:
+            st.subheader("Advanced Process Controls")
+            
+            col5, col6 = st.columns(2)
+            
+            with col5:
+                st.write("PID Control Parameters")
+                
+                # Temperature PID
+                st.write("Temperature Control")
+                temp_kp = st.number_input("Temperature Kp", 0.0, 100.0, 2.0)
+                temp_ki = st.number_input("Temperature Ki", 0.0, 100.0, 0.5)
+                temp_kd = st.number_input("Temperature Kd", 0.0, 100.0, 0.1)
+                
+                # pH PID
+                st.write("pH Control")
+                ph_kp = st.number_input("pH Kp", 0.0, 100.0, 1.0)
+                ph_ki = st.number_input("pH Ki", 0.0, 100.0, 0.2)
+                ph_kd = st.number_input("pH Kd", 0.0, 100.0, 0.05)
+            
+            with col6:
+                st.write("Feed Control Strategy")
+                
+                if process_type in ["Fed-batch Culture", "Perfusion Culture"]:
+                    feed_control = st.selectbox(
+                        "Feed Control Method",
+                        ["Time-based", "pH-stat", "DO-stat", "Glucose-stat", "Exponential", "Specific Growth Rate"]
+                    )
+                    
+                    if feed_control == "Exponential":
+                        mu_setpoint = st.number_input("Target Specific Growth Rate (h⁻¹)", 0.01, 1.0, 0.1)
+                        y_xs = st.number_input("Biomass Yield on Substrate (g/g)", 0.1, 1.0, 0.5)
+                    
+                    elif feed_control == "Specific Growth Rate":
+                        st.write("Growth Rate Control")
+                        mu_control = st.checkbox("Enable μ-stat Control", True)
+                        if mu_control:
+                            mu_target = st.number_input("Target μ (h⁻¹)", 0.01, 1.0, 0.1)
+
+        with tab4:
+            st.subheader("Process Analytical Technology (PAT)")
+            
+            col7, col8 = st.columns(2)
+            
+            with col7:
+                st.write("Online Measurements")
+                online_measurements = {
+                    "Biomass": st.checkbox("Biomass Probe", True),
+                    "Glucose": st.checkbox("Glucose Analyzer", True),
+                    "Oxygen Uptake": st.checkbox("Off-gas Analysis", True),
+                    "Capacitance": st.checkbox("Capacitance Probe", False),
+                    "Fluorescence": st.checkbox("Fluorescence Sensor", False)
+                }
+                
+                st.write("Sampling Configuration")
+                sampling_interval = st.number_input(
+                    "Sampling Interval (hours)",
+                    min_value=0.5,
+                    max_value=24.0,
+                    value=12.0
+                )
+            
+            with col8:
+                st.write("Data Analysis")
+                data_analysis = {
+                    "Real-time OUR": st.checkbox("Calculate OUR/CER", True),
+                    "Mass Balance": st.checkbox("Component Mass Balance", True),
+                    "Metabolic Rates": st.checkbox("Metabolic Rates", True),
+                    "Yield Coefficients": st.checkbox("Yield Coefficients", True)
+                }
+
+        with tab5:
+            st.subheader("Safety Controls and Alarms")
+
+            col9, col10 = st.columns(2)
+
+            with col9:
+                st.write("Critical Alarms")
+
+                # Temperature alarms
+                temp_low = st.number_input("Temperature Low Alarm (°C)", 0.0, 50.0, temp_range[0]-2)
+                temp_high = st.number_input("Temperature High Alarm (°C)", 0.0, 50.0, temp_range[1]+2)
+
+                # pH alarms
+                ph_low = st.number_input("pH Low Alarm", 0.0, 14.0, ph_range[0]-0.5)
+                ph_high = st.number_input("pH High Alarm", 0.0, 14.0, ph_range[1]+0.5)
+
+                # DO alarm
+                do_low = st.number_input("DO Low Alarm (%)", 0.0, 100.0, 20.0)
+
+                # Alarm notification settings
+                alarm_notification = st.selectbox(
+                    "Alarm Notification Method",
+                    ["Email", "SMS", "Audible Alert", "Visual Alert"]
+                )
+
+            with col10:
+                st.write("Safety Interlocks")
+
+                safety_features = {
+                    "Pressure Relief": st.checkbox("Pressure Relief Valve", True),
+                    "Emergency Stop": st.checkbox("Emergency Stop Button", True),
+                    "Power Backup": st.checkbox("UPS System", True),
+                    "Sterile Filter": st.checkbox("Sterile Filter", True),
+                    "Biocontainment": st.checkbox("Biocontainment System", True)
+                }
+
+                # Safety protocol settings
+                safety_protocol = st.selectbox(
+                    "Safety Protocol",
+                    ["Biosafety Level 1", "Biosafety Level 2", "Biosafety Level 3", "Custom"]
+                )
+
+        with tab6:
+            st.subheader("Data Analysis")
+            
+            col11, col12 = st.columns(2)
+            
+            with col11:
+                st.write("Process Data Visualization")
+                data_vis = st.selectbox(
+                    "Select Data Visualization",
+                    ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"],
+                    key="data_vis"
+                )
+                data_export = st.selectbox(
+                    "Select Data Export Format",
+                    ["CSV", "Excel", "JSON", "PDF"],
+                    key="data_export_unique"
+                )
+
+                fig = go.Figure()
+
+                if data_vis == "Time-series Plot":
+                    fig.add_trace(go.Scatter(x=[1, 2, 3], y=[10, 20, 30]))
+                
+                elif data_vis == "Scatter Plot":
+                    fig.add_trace(go.Scatter(x=[1, 2, 3], y=[10, 20, 30], mode='markers'))
+                
+                elif data_vis == "Bar Chart":
+                    fig.add_trace(go.Bar(x=[1, 2, 3], y=[10, 20, 30]))
+                
+                elif data_vis == "Heatmap":
+                    fig.add_trace(go.Heatmap(z=[[10, 20], [30, 40]]))
+                
+                st.plotly_chart(fig, use_container_width=True)
+            
+            with col12:
+                st.write("Statistical Analysis")
+                
+                # Statistical analysis options
+                stats_analysis = st.selectbox(
+                    "Select Statistical Analysis",
+                    ["Descriptive Statistics", "Inferential Statistics", "Regression Analysis", "Time-series Analysis"],
+                    key="stats_analysis"
                 )
                 
-                if feed_control == "Exponential":
-                    mu_setpoint = st.number_input("Target Specific Growth Rate (h⁻¹)", 0.01, 1.0, 0.1)
-                    y_xs = st.number_input("Biomass Yield on Substrate (g/g)", 0.1, 1.0, 0.5)
+                # Confidence interval settings
+                ci_level = st.number_input("Confidence Interval Level (%)", 50, 100, 95)
                 
-                elif feed_control == "Specific Growth Rate":
-                    st.write("Growth Rate Control")
-                    mu_control = st.checkbox("Enable μ-stat Control", True)
-                    if mu_control:
-                        mu_target = st.number_input("Target μ (h⁻¹)", 0.01, 1.0, 0.1)
+                # Statistical analysis output
+                if stats_analysis == "Descriptive Statistics":
+                    st.write("Mean: 20.5")
+                    st.write("Median: 20.0")
+                    st.write("Standard Deviation: 5.2")
+                
+                elif stats_analysis == "Inferential Statistics":
+                    st.write("p-value: 0.01")
+                    st.write("t-statistic: 2.5")
+                
+                elif stats_analysis == "Regression Analysis":
+                    st.write("R-squared: 0.8")
+                    st.write("Coefficient of Determination: 0.7")
+                
+                elif stats_analysis == "Time-series Analysis":
+                    st.write("ARIMA Order: (1,1,1)")
+                    st.write("Seasonal Decomposition: Additive")
 
-    with tab4:
-        st.subheader("Process Analytical Technology (PAT)")
-        
-        col7, col8 = st.columns(2)
-        
-        with col7:
-            st.write("Online Measurements")
-            online_measurements = {
-                "Biomass": st.checkbox("Biomass Probe", True),
-                "Glucose": st.checkbox("Glucose Analyzer", True),
-                "Oxygen Uptake": st.checkbox("Off-gas Analysis", True),
-                "Capacitance": st.checkbox("Capacitance Probe", False),
-                "Fluorescence": st.checkbox("Fluorescence Sensor", False)
-            }
+        with tab7:
+            st.subheader("Machine Learning")
             
-            st.write("Sampling Configuration")
-            sampling_interval = st.number_input(
-                "Sampling Interval (hours)",
-                min_value=0.5,
-                max_value=24.0,
-                value=12.0
-            )
-        
-        with col8:
-            st.write("Data Analysis")
-            data_analysis = {
-                "Real-time OUR": st.checkbox("Calculate OUR/CER", True),
-                "Mass Balance": st.checkbox("Component Mass Balance", True),
-                "Metabolic Rates": st.checkbox("Metabolic Rates", True),
-                "Yield Coefficients": st.checkbox("Yield Coefficients", True)
-            }
-
-    with tab5:
-        st.subheader("Safety Controls and Alarms")
-
-        col9, col10 = st.columns(2)
-
-        with col9:
-            st.write("Critical Alarms")
-
-            # Temperature alarms
-            temp_low = st.number_input("Temperature Low Alarm (°C)", 0.0, 50.0, temp_range[0]-2)
-            temp_high = st.number_input("Temperature High Alarm (°C)", 0.0, 50.0, temp_range[1]+2)
-
-            # pH alarms
-            ph_low = st.number_input("pH Low Alarm", 0.0, 14.0, ph_range[0]-0.5)
-            ph_high = st.number_input("pH High Alarm", 0.0, 14.0, ph_range[1]+0.5)
-
-            # DO alarm
-            do_low = st.number_input("DO Low Alarm (%)", 0.0, 100.0, 20.0)
-
-            # Alarm notification settings
-            alarm_notification = st.selectbox(
-                "Alarm Notification Method",
-                ["Email", "SMS", "Audible Alert", "Visual Alert"]
-            )
-
-        with col10:
-            st.write("Safety Interlocks")
-
-            safety_features = {
-                "Pressure Relief": st.checkbox("Pressure Relief Valve", True),
-                "Emergency Stop": st.checkbox("Emergency Stop Button", True),
-                "Power Backup": st.checkbox("UPS System", True),
-                "Sterile Filter": st.checkbox("Sterile Filter", True),
-                "Biocontainment": st.checkbox("Biocontainment System", True)
-            }
-
-            # Safety protocol settings
-            safety_protocol = st.selectbox(
-                "Safety Protocol",
-                ["Biosafety Level 1", "Biosafety Level 2", "Biosafety Level 3", "Custom"]
-            )
-
-    with tab6:
-        st.subheader("Data Analysis")
-        
-        col11, col12 = st.columns(2)
-        
-        with col11:
-            st.write("Process Data Visualization")
-            data_vis = st.selectbox(
-                "Select Data Visualization",
-                ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"],
-                key="data_vis"
-            )
-            data_export = st.selectbox(
-                "Select Data Export Format",
-                ["CSV", "Excel", "JSON", "PDF"],
-                key="data_export_unique"
-            )
-
-            fig = go.Figure()
-
-            if data_vis == "Time-series Plot":
-                fig.add_trace(go.Scatter(x=[1, 2, 3], y=[10, 20, 30]))
+            col13, col14 = st.columns(2)
             
-            elif data_vis == "Scatter Plot":
-                fig.add_trace(go.Scatter(x=[1, 2, 3], y=[10, 20, 30], mode='markers'))
-            
-            elif data_vis == "Bar Chart":
-                fig.add_trace(go.Bar(x=[1, 2, 3], y=[10, 20, 30]))
-            
-            elif data_vis == "Heatmap":
-                fig.add_trace(go.Heatmap(z=[[10, 20], [30, 40]]))
-            
-            st.plotly_chart(fig, use_container_width=True)
-        
-        with col12:
-            st.write("Statistical Analysis")
-            
-            # Statistical analysis options
-            stats_analysis = st.selectbox(
-                "Select Statistical Analysis",
-                ["Descriptive Statistics", "Inferential Statistics", "Regression Analysis", "Time-series Analysis"],
-                key="stats_analysis"
-            )
-            
-            # Confidence interval settings
-            ci_level = st.number_input("Confidence Interval Level (%)", 50, 100, 95)
-            
-            # Statistical analysis output
-            if stats_analysis == "Descriptive Statistics":
-                st.write("Mean: 20.5")
-                st.write("Median: 20.0")
-                st.write("Standard Deviation: 5.2")
-            
-            elif stats_analysis == "Inferential Statistics":
-                st.write("p-value: 0.01")
-                st.write("t-statistic: 2.5")
-            
-            elif stats_analysis == "Regression Analysis":
-                st.write("R-squared: 0.8")
-                st.write("Coefficient of Determination: 0.7")
-            
-            elif stats_analysis == "Time-series Analysis":
-                st.write("ARIMA Order: (1,1,1)")
-                st.write("Seasonal Decomposition: Additive")
+            with col13:
+                st.write("Model Selection")
+                ml_model = st.selectbox(
+                    "Select Machine Learning Model",
+                    ["Linear Regression", "Random Forest", "Support Vector Machine", "Neural Network"],
+                    key="ml_model"
+                )
+                
+                # Feature selection options
+                feature_selection = st.selectbox(
+                    "Select Feature Selection Method",
+                    ["All Features", "Recursive Feature Elimination", "Lasso Regression", "Random Forest Feature Importance"]
+                )
 
-    with tab7:
-        st.subheader("Machine Learning")
-        
-        col13, col14 = st.columns(2)
-        
-        with col13:
-            st.write("Model Selection")
-            ml_model = st.selectbox(
-                "Select Machine Learning Model",
-                ["Linear Regression", "Random Forest", "Support Vector Machine", "Neural Network"],
-                key="ml_model"
-            )
-            
-            # Feature selection options
-            feature_selection = st.selectbox(
-                "Select Feature Selection Method",
-                ["All Features", "Recursive Feature Elimination", "Lasso Regression", "Random Forest Feature Importance"]
-            )
-
-        with col14:
-            st.write("Model Evaluation")
-            evaluation_metrics = st.selectbox(
-                "Select Model Evaluation Metric",
-                ["Mean Squared Error", "Mean Absolute Error", "R-squared", "Mean Absolute Percentage Error"],
-                key="evaluation_metrics"
-            )
-            
-            hyperparam_tuning = st.selectbox(
-                "Select Hyperparameter Tuning Method",
-                ["Grid Search", "Random Search", "Bayesian Optimization"]
-            )
-
-            
+            with col14:
+                st.write("Model Evaluation")
+                evaluation_metrics = st.selectbox(
+                    "Select Model Evaluation Metric",
+                    ["Mean Squared Error", "Mean Absolute Error", "R-squared", "Mean Absolute Percentage Error"],
+                    key="evaluation_metrics"
+                )
+                
+                hyperparam_tuning = st.selectbox(
+                    "Select Hyperparameter Tuning Method",
+                    ["Grid Search", "Random Search", "Bayesian Optimization"]
+                )
