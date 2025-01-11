@@ -269,37 +269,37 @@ with tabs[1]:
         volume = st.number_input("Total Volume (L)", min_value=0.1, step=0.1)
 
         # Basal Media
-        st.write("Basal Media")
-        basal_media = st.selectbox("Select Basal Media", [
-            "DMEM", "RPMI 1640", "MEM", "Ham's F-12", "M199", "IMDM", "Alpha-MEM", "Beta-MEM"
-        ])
+st.write("Basal Media")
+basal_media = st.selectbox("Select Basal Media", [
+    "Do not select media", "DMEM", "RPMI 1640", "MEM", "Ham's F-12", "M199", "IMDM", "Alpha-MEM", "Beta-MEM"
+])
 
-        # Serum-Free Media
-        st.write("Serum-Free Media")
-        serum_free_media = st.selectbox("Select Serum-Free Media", [
-            "PFHM-II", "CDM-HD", "X-VIVO", "AIM-V", "SFM4Mega", "Sf-900 II SFM", "ExCell"
-        ])
+# Serum-Free Media
+st.write("Serum-Free Media")
+serum_free_media = st.selectbox("Select Serum-Free Media", [
+    "Do not select media", "PFHM-II", "CDM-HD", "X-VIVO", "AIM-V", "SFM4Mega", "Sf-900 II SFM", "ExCell"
+])
 
-        # Specialty Media
-        st.write("Specialty Media")
-        specialty_media = st.selectbox("Select Specialty Media", [
-            "Neurobasal Medium", "STEMCELL Technologies' Media", "MesenCult", "Osteoblast Growth Medium",
-            "Chondrocyte Growth Medium", "Adipocyte Growth Medium", "Hepatocyte Growth Medium"
-        ])
+# Specialty Media
+st.write("Specialty Media")
+specialty_media = st.selectbox("Select Specialty Media", [
+    "Do not select media", "Neurobasal Medium", "STEMCELL Technologies' Media", "MesenCult", "Osteoblast Growth Medium",
+    "Chondrocyte Growth Medium", "Adipocyte Growth Medium", "Hepatocyte Growth Medium"
+])
 
-        # Biomass Production Media
-        st.write("Biomass Production Media")
-        biomass_production_media = st.selectbox("Select Biomass Production Media", [
-            "LB", "TB", "YPD", "PDA", "MRS", "TSA", "BHI"
-        ])
+# Biomass Production Media
+st.write("Biomass Production Media")
+biomass_production_media = st.selectbox("Select Biomass Production Media", [
+    "Do not select media", "LB", "TB", "YPD", "PDA", "MRS", "TSA", "BHI"
+])
 
-        # Biotherapeutics Production Media
-        st.write("Biotherapeutics Production Media")
-        biotherapeutics_production_media = st.selectbox("Select Biotherapeutics Production Media", [
-            "CHO Cell Culture Medium", "HEK Cell Culture Medium", "Insect Cell Culture Medium",
-            "Hybridoma Cell Culture Medium", "PER.C6 Cell Culture Medium", "Vero Cell Culture Medium",
-            "MDCK Cell Culture Medium"
-        ])
+# Biotherapeutics Production Media
+st.write("Biotherapeutics Production Media")
+biotherapeutics_production_media = st.selectbox("Select Biotherapeutics Production Media", [
+    "Do not select media", "CHO Cell Culture Medium", "HEK Cell Culture Medium", "Insect Cell Culture Medium",
+    "Hybridoma Cell Culture Medium", "PER.C6 Cell Culture Medium", "Vero Cell Culture Medium",
+    "MDCK Cell Culture Medium"
+])
 
         # Additional Supplements
         st.write("Additional Supplements")
