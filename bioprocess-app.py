@@ -407,6 +407,115 @@ with tabs[2]:
             temperature_control = st.slider("Temperature Control (°C)", min_value=20.0, max_value=45.0, value=37.0, step=0.5)
             pH_control = st.slider("pH Control", min_value=4.0, max_value=9.0, value=7.2, step=0.1)
 
+# Function to simulate bioprocess
+            def simulate_bioprocess(config):
+                # Simulate process based on configuration (for demonstration purposes, using random data)
+                time = np.arange(0, config['duration'])
+                biomass = np.random.rand(config['duration']) * 100
+                glucose = np.random.rand(config['duration']) * 10
+                oxygen = np.random.rand(config['duration']) * 100
+                lactate = np.random.rand(config['duration']) * 5
+                ammonia = np.random.rand(config['duration']) * 2
+                return time, biomass, glucose, oxygen, lactate, ammonia
+
+            # AI feature to explain simulation results and provide recommendations
+            def ai_analysis(biomass, glucose, oxygen, lactate, ammonia):
+                explanation = "The simulation shows the dynamic behavior of biomass, glucose, oxygen, lactate, and ammonia over time."
+                recommendations = []
+
+                if np.mean(biomass) < 50:
+                    recommendations.append("Consider optimizing the media composition or feed strategy to improve biomass growth.")
+
+                if np.mean(glucose) < 5:
+                    recommendations.append("Glucose levels are low. Increase the glucose concentration in the feed.")
+
+                if np.mean(oxygen) < 50:
+                    recommendations.append("Oxygen levels are low. Increase the aeration rate or agitation speed.")
+
+                if np.mean(lactate) > 2:
+                    recommendations.append("High lactate levels detected. Check for possible anaerobic conditions and adjust pH or oxygen levels.")
+
+                if np.mean(ammonia) > 1:
+                    recommendations.append("High ammonia levels detected. Optimize the nitrogen source or control the pH better.")
+
+                return explanation, recommendations
+
+if st.button("Simulate Bioprocess"):
+            config_data = {
+                "temp_range": temp_range,
+                "ph_range": ph_range,
+                "do_setpoint": do_setpoint,
+                "agitation": agitation,
+                "aeration": aeration,
+                "duration": duration,
+                "temperature_control": temperature_control,
+                "pH_control": pH_control
+            }
+            time, biomass, glucose, oxygen, lactate, ammonia = simulate_bioprocess(config_data)
+
+            st.subheader("Bioprocess Simulation Results")
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(x=time, y=biomass, mode='lines', name='Biomass'))
+            fig.add_trace(go.Scatter(x=time, y=glucose, mode='lines', name='Glucose'))
+            fig.add_trace(go.Scatter(x=time, y=oxygen, mode='lines', name='Oxygen'))
+            fig.add_trace(go.Scatter(x=time, y=lactate, mode='lines', name='Lactate'))
+            fig.add_trace(go.Scatter(x=time, y=ammonia, mode='lines', name='Ammonia'))
+            fig.update_layout(title='Bioprocess Simulation Results', xaxis_title='Time (hours)', yaxis_title='Concentration')
+            st.plotly_chart(fig, use_container_width=True)
+
+            charts = [
+                ("Biomass vs Glucose", biomass, glucose),
+                ("Biomass vs Oxygen", biomass, oxygen),
+                ("Biomass vs Lactate", biomass, lactate),
+                ("Biomass vs Ammonia", biomass, ammonia),
+                ("Glucose vs Oxygen", glucose, oxygen),
+                ("Glucose vs Lactate", glucose, lactate),
+                ("Glucose vs Ammonia", glucose, ammonia),
+                ("Oxygen vs Lactate", oxygen, lactate),
+                ("Oxygen vs Ammonia", oxygen, ammonia),
+                ("Lactate vs Ammonia", lactate, ammonia)
+            ]
+
+            for title, y1, y2 in charts:
+                fig = go.Figure()
+                fig.add_trace(go.Scatter(x=time, y=y1, mode='lines', name=title.split(' vs ')[0]))
+                fig.add_trace(go.Scatter(x=time, y=y2, mode='lines', name=title.split(' vs ')[1]))
+                fig.update_layout(title=title, xaxis_title='Time (hours)', yaxis_title='Concentration')
+                st.plotly_chart(fig, use_container_width=True)
+
+            explanation, recommendations = ai_analysis(biomass, glucose, oxygen, lactate, ammonia)
+            st.subheader("AI Analysis")
+            st.write(explanation)
+            st.write("Recommendations:")
+            for rec in recommendations:
+                st.write(f"- {rec}")
+
+        if st.button("Download Configuration"):
+            config_data = {
+                "process_type": process_type,
+                "organism_type": organism_type,
+                "scale": scale,
+                "temp_range": temp_range,
+                "ph_range": ph_range,
+                "do_setpoint": do_setpoint,
+                "agitation": agitation,
+                "aeration": aeration,
+                "duration": duration,
+                "feed_control": feed_control,
+                "online_measurements": online_measurements,
+                "sampling_interval": sampling_interval,
+                "data_analysis": data_analysis,
+                "safety_features": safety_features
+            }
+            
+            config_json = json.dumps(config_data, indent=4)
+            
+            st.download_button(
+                label="Download Configuration",
+                data=config_json,
+                file_name="bioprocess_config.json",
+                mime="application/json"
+            )
     with tab2:
         st.subheader("Media Components")
         
@@ -645,119 +754,4 @@ with tabs[2]:
                 ["Grid Search", "Random Search", "Bayesian Optimization"]
             )
 
-            # Function to simulate bioprocess
-            def simulate_bioprocess(config):
-                # Simulate process based on configuration (for demonstration purposes, using random data)
-                time = np.arange(0, config['duration'])
-                biomass = np.random.rand(config['duration']) * 100
-                glucose = np.random.rand(config['duration']) * 10
-                oxygen = np.random.rand(config['duration']) * 100
-                lactate = np.random.rand(config['duration']) * 5
-                ammonia = np.random.rand(config['duration']) * 2
-                return time, biomass, glucose, oxygen, lactate, ammonia
-
-            # AI feature to explain simulation results and provide recommendations
-            def ai_analysis(biomass, glucose, oxygen, lactate, ammonia):
-                explanation = "The simulation shows the dynamic behavior of biomass, glucose, oxygen, lactate, and ammonia over time."
-                recommendations = []
-
-                if np.mean(biomass) < 50:
-                    recommendations.append("Consider optimizing the media composition or feed strategy to improve biomass growth.")
-
-                if np.mean(glucose) < 5:
-                    recommendations.append("Glucose levels are low. Increase the glucose concentration in the feed.")
-
-                if np.mean(oxygen) < 50:
-                    recommendations.append("Oxygen levels are low. Increase the aeration rate or agitation speed.")
-
-                if np.mean(lactate) > 2:
-                    recommendations.append("High lactate levels detected. Check for possible anaerobic conditions and adjust pH or oxygen levels.")
-
-                if np.mean(ammonia) > 1:
-                    recommendations.append("High ammonia levels detected. Optimize the nitrogen source or control the pH better.")
-
-                return explanation, recommendations
-
-            if st.button("Simulate Bioprocess"):
-                config_data = {
-                    "process_stage": process_stage,
-                    "process_type": process_type,
-                    "organism_type": organism_type,
-                    "scale": scale,
-                    "temp_range": temp_range,
-                    "ph_range": ph_range,
-                    "do_setpoint": do_setpoint,
-                    "agitation": agitation,
-                    "aeration": aeration,
-                    "duration": duration,
-                    "feed_control": feed_control if 'feed_control' in locals() else None,
-                    "online_measurements": online_measurements,
-                    "sampling_interval": sampling_interval,
-                    "data_analysis": data_analysis,
-                    "safety_features": safety_features
-                }
-                time, biomass, glucose, oxygen, lactate, ammonia = simulate_bioprocess(config_data)
-                
-                st.subheader("Bioprocess Simulation Results")
-                fig = go.Figure()
-                fig.add_trace(go.Scatter(x=time, y=biomass, mode='lines', name='Biomass'))
-                fig.add_trace(go.Scatter(x=time, y=glucose, mode='lines', name='Glucose'))
-                fig.add_trace(go.Scatter(x=time, y=oxygen, mode='lines', name='Oxygen'))
-                fig.add_trace(go.Scatter(x=time, y=lactate, mode='lines', name='Lactate'))
-                fig.add_trace(go.Scatter(x=time, y=ammonia, mode='lines', name='Ammonia'))
-                fig.update_layout(title='Bioprocess Simulation Results', xaxis_title='Time (hours)', yaxis_title='Concentration')
-                st.plotly_chart(fig, use_container_width=True)
-
-                charts = [
-                    ("Biomass vs Glucose", biomass, glucose),
-                    ("Biomass vs Oxygen", biomass, oxygen),
-                    ("Biomass vs Lactate", biomass, lactate),
-                    ("Biomass vs Ammonia", biomass, ammonia),
-                    ("Glucose vs Oxygen", glucose, oxygen),
-                    ("Glucose vs Lactate", glucose, lactate),
-                    ("Glucose vs Ammonia", glucose, ammonia),
-                    ("Oxygen vs Lactate", oxygen, lactate),
-                    ("Oxygen vs Ammonia", oxygen, ammonia),
-                    ("Lactate vs Ammonia", lactate, ammonia)
-                ]
-
-                for title, y1, y2 in charts:
-                    fig = go.Figure()
-                    fig.add_trace(go.Scatter(x=time, y=y1, mode='lines', name=title.split(' vs ')[0]))
-                    fig.add_trace(go.Scatter(x=time, y=y2, mode='lines', name=title.split(' vs ')[1]))
-                    fig.update_layout(title=title, xaxis_title='Time (hours)', yaxis_title='Concentration')
-                    st.plotly_chart(fig, use_container_width=True)
-
-                explanation, recommendations = ai_analysis(biomass, glucose, oxygen, lactate, ammonia)
-                st.subheader("AI Analysis")
-                st.write(explanation)
-                st.write("Recommendations:")
-                for rec in recommendations:
-                    st.write(f"- {rec}")
-
-            if st.button("Download Configuration"):
-                config_data = {
-                    "process_type": process_type,
-                    "organism_type": organism_type,
-                    "scale": scale,
-                    "temp_range": temp_range,
-                    "ph_range": ph_range,
-                    "do_setpoint": do_setpoint,
-                    "agitation": agitation,
-                    "aeration": aeration,
-                    "duration": duration,
-                    "feed_control": feed_control,
-                    "online_measurements": online_measurements,
-                    "sampling_interval": sampling_interval,
-                    "data_analysis": data_analysis,
-                    "safety_features": safety_features
-                }
-                
-                config_json = json.dumps(config_data, indent=4)
-                
-                st.download_button(
-                    label="Download Configuration",
-                    data=config_json,
-                    file_name="bioprocess_config.json",
-                    mime="application/json"
-                )
+            
