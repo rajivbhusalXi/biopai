@@ -73,7 +73,7 @@ def generate_bioreactor_diagram(selected_bioreactor, components):
     st.write(f"Generating flow diagram for {selected_bioreactor} with the following components:")
 
     dot = graphviz.Digraph(format='png')
-    dot.attr(size='48,48')  # Increase the size of the diagram
+    dot.attr(size='150,100')  # Increase the size of the diagram
 
     # Define main nodes
     main_components = components["Main Components"]
