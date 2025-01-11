@@ -631,38 +631,38 @@ with tabs[2]:
                 st.write("Seasonal Decomposition: Additive")
 
     with tab7:
-        st.subheader("Machine Learning")
+    st.subheader("Machine Learning")
 
-        col13, col14 = st.columns(2)
+    col13, col14 = st.columns(2)
 
-        with col13:
-            st.write("Model Selection")
-            ml_model = st.selectbox(
-                "Select Machine Learning Model",
-                ["Linear Regression", "Random Forest", "Support Vector Machine", "Neural Network"],
-                key="ml_model"
-            )
+    with col13:
+        st.write("Model Selection")
+        ml_model = st.selectbox(
+            "Select Machine Learning Model",
+            ["Linear Regression", "Random Forest", "Support Vector Machine", "Neural Network"],
+            key="ml_model_tab7"
+        )
 
-            # Feature selection options
-            feature_selection = st.selectbox(
-                "Select Feature Selection Method",
-                ["All Features", "Recursive Feature Elimination", "Lasso Regression", "Random Forest Feature Importance"],
-                key="feature_selection"
-            )
+        # Feature selection options
+        feature_selection = st.selectbox(
+            "Select Feature Selection Method",
+            ["All Features", "Recursive Feature Elimination", "Lasso Regression", "Random Forest Feature Importance"],
+            key="feature_selection_tab7"
+        )
 
-        with col14:
-            st.write("Model Evaluation")
-            evaluation_metrics = st.selectbox(
-                "Select Model Evaluation Metric",
-                ["Mean Squared Error", "Mean Absolute Error", "R-squared", "Mean Absolute Percentage Error"],
-                key="evaluation_metrics"
-            )
+    with col14:
+        st.write("Model Evaluation")
+        evaluation_metrics = st.selectbox(
+            "Select Model Evaluation Metric",
+            ["Mean Squared Error", "Mean Absolute Error", "R-squared", "Mean Absolute Percentage Error"],
+            key="evaluation_metrics_tab7"
+        )
 
-            hyperparam_tuning = st.selectbox(
-                "Select Hyperparameter Tuning Method",
-                ["Grid Search", "Random Search", "Bayesian Optimization"],
-                key="hyperparam_tuning"
-            )
+        hyperparam_tuning = st.selectbox(
+            "Select Hyperparameter Tuning Method",
+            ["Grid Search", "Random Search", "Bayesian Optimization"],
+            key="hyperparam_tuning_tab7"
+        )
 
 # Update the simulate_bioprocess function to collect all variables from different tabs
 def simulate_bioprocess(config):
