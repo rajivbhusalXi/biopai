@@ -461,9 +461,6 @@ if process_stage == "Upstream":
             with col6:
                 st.write("Feed Control Strategy")
                 
-                if process_type in ["Fed-batch Culture", "Perfusion Culture"]:
-                    feed_control = st.selectbox(
-                        "Feed Control Method",
             if process_type in ["Fed-batch Culture", "Perfusion Culture"]:
                 feed_control = st.selectbox(
                     "Feed Control Method",
