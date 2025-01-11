@@ -407,40 +407,36 @@ with tabs[2]:
             temperature_control = st.slider("Temperature Control (°C)", min_value=20.0, max_value=45.0, value=37.0, step=0.5)
             pH_control = st.slider("pH Control", min_value=4.0, max_value=9.0, value=7.2, step=0.1)
 
-# Function to simulate bioprocess
-            def simulate_bioprocess(config):
-                # Simulate process based on configuration (for demonstration purposes, using random data)
-                time = np.arange(0, config['duration'])
-                biomass = np.random.rand(config['duration']) * 100
-                glucose = np.random.rand(config['duration']) * 10
-                oxygen = np.random.rand(config['duration']) * 100
-                lactate = np.random.rand(config['duration']) * 5
-                ammonia = np.random.rand(config['duration']) * 2
-                return time, biomass, glucose, oxygen, lactate, ammonia
+        # Function to simulate bioprocess
+        def simulate_bioprocess(config):
+            # Simulate process based on configuration (for demonstration purposes, using random data)
+            time = np.arange(0, config['duration'])
+            biomass = np.random.rand(config['duration']) * 100
+            glucose = np.random.rand(config['duration']) * 10
+            oxygen = np.random.rand(config['duration']) * 100
+            lactate = np.random.rand(config['duration']) * 5
+            ammonia = np.random.rand(config['duration']) * 2
+            return time, biomass, glucose, oxygen, lactate, ammonia
 
-            # AI feature to explain simulation results and provide recommendations
-            def ai_analysis(biomass, glucose, oxygen, lactate, ammonia):
-                explanation = "The simulation shows the dynamic behavior of biomass, glucose, oxygen, lactate, and ammonia over time."
-                recommendations = []
+        # AI feature to explain simulation results and provide recommendations
+        def ai_analysis(biomass, glucose, oxygen, lactate, ammonia):
+            explanation = "The simulation shows the dynamic behavior of biomass, glucose, oxygen, lactate, and ammonia over time."
+            recommendations = []
 
-                if np.mean(biomass) < 50:
-                    recommendations.append("Consider optimizing the media composition or feed strategy to improve biomass growth.")
+            if np.mean(biomass) < 50:
+                recommendations.append("Consider optimizing the media composition or feed strategy to improve biomass growth.")
+            if np.mean(glucose) < 5:
+                recommendations.append("Glucose levels are low. Increase the glucose concentration in the feed.")
+            if np.mean(oxygen) < 50:
+                recommendations.append("Oxygen levels are low. Increase the aeration rate or agitation speed.")
+            if np.mean(lactate) > 2:
+                recommendations.append("High lactate levels detected. Check for possible anaerobic conditions and adjust pH or oxygen levels.")
+            if np.mean(ammonia) > 1:
+                recommendations.append("High ammonia levels detected. Optimize the nitrogen source or control the pH better.")
 
-                if np.mean(glucose) < 5:
-                    recommendations.append("Glucose levels are low. Increase the glucose concentration in the feed.")
+            return explanation, recommendations
 
-                if np.mean(oxygen) < 50:
-                    recommendations.append("Oxygen levels are low. Increase the aeration rate or agitation speed.")
-
-                if np.mean(lactate) > 2:
-                    recommendations.append("High lactate levels detected. Check for possible anaerobic conditions and adjust pH or oxygen levels.")
-
-                if np.mean(ammonia) > 1:
-                    recommendations.append("High ammonia levels detected. Optimize the nitrogen source or control the pH better.")
-
-                return explanation, recommendations
-
-if st.button("Simulate Bioprocess"):
+        if st.button("Simulate Bioprocess"):
             config_data = {
                 "temp_range": temp_range,
                 "ph_range": ph_range,
@@ -516,6 +512,7 @@ if st.button("Simulate Bioprocess"):
                 file_name="bioprocess_config.json",
                 mime="application/json"
             )
+
     with tab2:
         st.subheader("Media Components")
         
