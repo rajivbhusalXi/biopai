@@ -645,6 +645,16 @@ with tab7:
             ["Grid Search", "Random Search", "Bayesian Optimization"]
         )
 
+def simulate_bioprocess(config):
+    # Simulate process based on configuration (for demonstration purposes, using random data)
+    time = np.arange(0, config['duration'])
+    biomass = np.random.rand(config['duration']) * 100
+    glucose = np.random.rand(config['duration']) * 10
+    oxygen = np.random.rand(config['duration']) * 100
+    lactate = np.random.rand(config['duration']) * 5
+    ammonia = np.random.rand(config['duration']) * 2
+    return time, biomass, glucose, oxygen, lactate, ammonia
+
 # Place buttons at the bottom of the Bioprocess Simulator page
 st.markdown("---")
 if st.button("Simulate Bioprocess"):
