@@ -329,115 +329,35 @@ with tabs[1]:
             st.write(f"Hepes Buffer: {hepes_buffer * volume} mM")
             st.write(f"Growth Factors: {growth_factors}")
 
-with tabs[2]:
-    st.subheader("Bioprocess Simulator")
+def simulate_bioprocess(config):
+    # Simulate process based on configuration (for demonstration purposes, using random data)
+    time = np.arange(0, config['duration'])
+    biomass = np.random.rand(config['duration']) * 100
+    glucose = np.random.rand(config['duration']) * 10
+    oxygen = np.random.rand(config['duration']) * 100
+    lactate = np.random.rand(config['duration']) * 5
+    ammonia = np.random.rand(config['duration']) * 2
+    return time, biomass, glucose, oxygen, lactate, ammonia
 
-    # Existing content moved to Bioprocess Simulator tab
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
-        "Process Parameters", 
-        "Media Design", 
-        "Process Controls",
-        "PAT Strategy",
-        "Safety Controls",
-        "Data Analysis",
-        "Machine Learning"
-    ])
+def ai_analysis(biomass, glucose, oxygen, lactate, ammonia):
+    explanation = "The simulation shows the dynamic behavior of biomass, glucose, oxygen, lactate, and ammonia over time."
+    recommendations = []
 
-    with tab1:
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.subheader("Basic Parameters")
-            
-            # Temperature settings
-            temp_range = st.slider(
-                "Temperature Range (°C)",
-                min_value=20.0,
-                max_value=45.0,
-                value=(30.0, 37.0),
-                step=0.5
-            )
-            
-            # pH settings
-            ph_range = st.slider(
-                "pH Range",
-                min_value=4.0,
-                max_value=9.0,
-                value=(6.8, 7.2),
-                step=0.1
-            )
-            
-            # Dissolved oxygen
-            do_setpoint = st.slider(
-                "Dissolved Oxygen Setpoint (%)",
-                min_value=20,
-                max_value=100,
-                value=40
-            )
-        
-        with col2:
-            st.subheader("Advanced Parameters")
-            
-            # Agitation settings
-            agitation = st.number_input(
-                "Agitation Speed (RPM)",
-                min_value=50,
-                max_value=1500,
-                value=200
-            )
-            
-            # Aeration rate
-            aeration = st.number_input(
-                "Aeration Rate (vvm)",
-                min_value=0.1,
-                max_value=2.0,
-                value=0.5,
-                step=0.1
-            )
-            
-            # Process duration
-            duration = st.number_input(
-                "Process Duration (hours)",
-                min_value=1,
-                max_value=1000,
-                value=168
-            )
-            
-            # Additional advanced parameters
-            temperature_control = st.slider("Temperature Control (°C)", min_value=20.0, max_value=45.0, value=37.0, step=0.5)
-            pH_control = st.slider("pH Control", min_value=4.0, max_value=9.0, value=7.2, step=0.1)
+    if np.mean(biomass) < 50:
+        recommendations.append("Consider optimizing the media composition or feed strategy to improve biomass growth.")
+    if np.mean(glucose) < 5:
+        recommendations.append("Glucose levels are low. Increase the glucose concentration in the feed.")
+    if np.mean(oxygen) < 50:
+        recommendations.append("Oxygen levels are low. Increase the aeration rate or agitation speed.")
+    if np.mean(lactate) > 2:
+        recommendations.append("High lactate levels detected. Check for possible anaerobic conditions and adjust pH or oxygen levels.")
+    if np.mean(ammonia) > 1:
+        recommendations.append("High ammonia levels detected. Optimize the nitrogen source or control the pH better.")
 
-# Function to simulate bioprocess
-            def simulate_bioprocess(config):
-                # Simulate process based on configuration (for demonstration purposes, using random data)
-                time = np.arange(0, config['duration'])
-                biomass = np.random.rand(config['duration']) * 100
-                glucose = np.random.rand(config['duration']) * 10
-                oxygen = np.random.rand(config['duration']) * 100
-                lactate = np.random.rand(config['duration']) * 5
-                ammonia = np.random.rand(config['duration']) * 2
-                return time, biomass, glucose, oxygen, lactate, ammonia
-
-            # AI feature to explain simulation results and provide recommendations
-            def ai_analysis(biomass, glucose, oxygen, lactate, ammonia):
-                explanation = "The simulation shows the dynamic behavior of biomass, glucose, oxygen, lactate, and ammonia over time."
-                recommendations = []
-
-                if np.mean(biomass) < 50:
-                    recommendations.append("Consider optimizing the media composition or feed strategy to improve biomass growth.")
-                if np.mean(glucose) < 5:
-                    recommendations.append("Glucose levels are low. Increase the glucose concentration in the feed.")
-                if np.mean(oxygen) < 50:
-                    recommendations.append("Oxygen levels are low. Increase the aeration rate or agitation speed.")
-                if np.mean(lactate) > 2:
-                    recommendations.append("High lactate levels detected. Check for possible anaerobic conditions and adjust pH or oxygen levels.")
-                if np.mean(ammonia) > 1:
-                    recommendations.append("High ammonia levels detected. Optimize the nitrogen source or control the pH better.")
-
-                return explanation, recommendations
+    return explanation, recommendations
 
 def add_buttons(temp_range, ph_range, do_setpoint, agitation, aeration, duration, temperature_control, pH_control, feed_control):
-    if st.button("Simulate Bioprocess"):
+    if st.button("Simulate Bioprocess", key="simulate_bioprocess"):
         config_data = {
             "temp_range": temp_range,
             "ph_range": ph_range,
@@ -490,7 +410,7 @@ def add_buttons(temp_range, ph_range, do_setpoint, agitation, aeration, duration
         for rec in recommendations:
             st.write(f"- {rec}")
 
-    if st.button("Download Configuration"):
+    if st.button("Download Configuration", key="download_configuration"):
         config_data = {
             "process_type": process_type,
             "organism_type": organism_type,
@@ -515,10 +435,18 @@ def add_buttons(temp_range, ph_range, do_setpoint, agitation, aeration, duration
             label="Download Configuration",
             data=config_json,
             file_name="bioprocess_config.json",
-            mime="application/json"
+            mime="application/json",
+            key="download_config_button"
         )
 
-# Add buttons to all tabs
+# Main content in tabs
+tabs = st.tabs([
+    "Bioreactor Selector", 
+    "Media Creator", 
+    "Bioprocess Simulator", 
+    "Integration"
+])
+
 with tabs[2]:
     st.subheader("Bioprocess Simulator")
 
@@ -623,8 +551,6 @@ with tabs[2]:
                 "Antifoam": st.checkbox("Antifoam", True, key='antifoam')
             }
 
-        add_buttons(None, None, None, None, None, None, None, None, None)
-
     with tab3:
         st.subheader("Advanced Process Controls")
         
@@ -663,7 +589,7 @@ with tabs[2]:
                     if mu_control:
                         mu_target = st.number_input("Target μ (h⁻¹)", 0.01, 1.0, 0.1, key='mu_target')
 
-        add_buttons(None, None, None, None, None, None, None, None, feed_control)
+        add_buttons(temp_range, ph_range, do_setpoint, agitation, aeration, duration, temperature_control, pH_control, feed_control)
 
     with tab4:
         st.subheader("Process Analytical Technology (PAT)")
@@ -698,7 +624,7 @@ with tabs[2]:
                 "Yield Coefficients": st.checkbox("Yield Coefficients", True, key='yield_coefficients')
             }
 
-        add_buttons(None, None, None, None, None, None, None, None, None)
+        add_buttons(temp_range, ph_range, do_setpoint, agitation, aeration, duration, temperature_control, pH_control, feed_control)
 
     with tab5:
         st.subheader("Safety Controls and Alarms")
@@ -739,7 +665,7 @@ with tabs[2]:
                 key='safety_protocol'
             )
 
-        add_buttons(None, None, None, None, None, None, None, None, None)
+        add_buttons(temp_range, ph_range, do_setpoint, agitation, aeration, duration, temperature_control, pH_control, feed_control)
 
     with tab6:
         st.subheader("Data Analysis")
@@ -803,7 +729,7 @@ with tabs[2]:
                 st.write("ARIMA Order: (1,1,1)")
                 st.write("Seasonal Decomposition: Additive")
 
-        add_buttons(None, None, None, None, None, None, None, None, None)
+        add_buttons(temp_range, ph_range, do_setpoint, agitation, aeration, duration, temperature_control, pH_control, feed_control)
 
     with tab7:
         st.subheader("Machine Learning")
@@ -838,4 +764,4 @@ with tabs[2]:
                 key="hyperparam_tuning"
             )
 
-        add_buttons(None, None, None, None, None, None, None, None, None)
+        add_buttons(temp_range, ph_range, do_setpoint, agitation, aeration, duration, temperature_control, pH_control, feed_control)
