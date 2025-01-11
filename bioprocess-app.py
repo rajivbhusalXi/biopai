@@ -655,6 +655,27 @@ def simulate_bioprocess(config):
     ammonia = np.random.rand(config['duration']) * 2
     return time, biomass, glucose, oxygen, lactate, ammonia
 
+def ai_analysis(biomass, glucose, oxygen, lactate, ammonia):
+    explanation = "The simulation shows the dynamic behavior of biomass, glucose, oxygen, lactate, and ammonia over time."
+    recommendations = []
+
+    if np.mean(biomass) < 50:
+        recommendations.append("Consider optimizing the media composition or feed strategy to improve biomass growth.")
+
+    if np.mean(glucose) < 5:
+        recommendations.append("Glucose levels are low. Increase the glucose concentration in the feed.")
+
+    if np.mean(oxygen) < 50:
+        recommendations.append("Oxygen levels are low. Increase the aeration rate or agitation speed.")
+
+    if np.mean(lactate) > 2:
+        recommendations.append("High lactate levels detected. Check for possible anaerobic conditions and adjust pH or oxygen levels.")
+
+    if np.mean(ammonia) > 1:
+        recommendations.append("High ammonia levels detected. Optimize the nitrogen source or control the pH better.")
+
+    return explanation, recommendations
+
 # Place buttons at the bottom of the Bioprocess Simulator page
 st.markdown("---")
 if st.button("Simulate Bioprocess"):
