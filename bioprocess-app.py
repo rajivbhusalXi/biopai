@@ -329,8 +329,6 @@ if process_stage == "Upstream":
 
     with upstream_tabs[2]:
         st.subheader("Bioprocess Simulator")
-        with upstream_tabs[2]:
-        st.subheader("Bioprocess Simulator")
         tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
             "Process Parameters", 
             "Media Design", 
