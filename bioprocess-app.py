@@ -327,207 +327,6 @@ if process_stage == "Upstream":
                     "growth_factors": growth_factors
                 }
 
-    with upstream_tabs[2]:
-        st.subheader("Bioprocess Simulator")
-        tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
-            "Process Parameters", 
-            "Media Design", 
-            "Process Controls",
-            "PAT Strategy",
-            "Safety Controls",
-            "Data Analysis",
-            "Machine Learning"
-        ])
-
-    with upstream_tabs[3]:
-        st.subheader("Integration")
-        # Existing code for Integration
-
-elif process_stage == "Downstream":
-    downstream_tabs = st.tabs(["Unit Operations Library", "Process Simulation", "Equipment Design", "Data Analysis"])
-    with downstream_tabs[0]:
-        st.subheader("Unit Operations Library")
-        # Code for Unit Operations Library
-    with downstream_tabs[1]:
-        st.subheader("Process Simulation")
-        # Code for Process Simulation
-    with downstream_tabs[2]:
-        st.subheader("Equipment Design")
-        # Code for Equipment Design
-    with downstream_tabs[3]:
-        st.subheader("Data Analysis")
-        # Code for Data Analysis
-
-with tabs[0]:
-    st.subheader("Bioreactor Selector")
-    bioreactors = {
-        "Stirred Tank Bioreactors": [
-            "Glass bioreactors: Suitable for small-scale applications, often used in research and development.",
-            "Stainless steel bioreactors: Robust and corrosion-resistant, commonly used in industrial-scale applications.",
-            "Single-use bioreactors: Disposable bioreactors made from plastic or other materials, often used in biopharmaceutical applications."
-        ],
-        "Packed Bed Bioreactors": [
-            "Fixed bed bioreactors: Used for solid-phase catalysis and enzymatic reactions.",
-            "Fluidized bed bioreactors: Used for applications requiring high mass transfer rates."
-        ],
-        "Membrane Bioreactors": [
-            "Microfiltration/Ultrafiltration (MF/UF) bioreactors: Used for cell culture, protein separation, and wastewater treatment.",
-            "Dialysis bioreactors: Used for cell culture, protein separation, and medical applications."
-        ],
-        "Photo-Bioreactors": [
-            "Flat panel photobioreactors: Used for algae cultivation and photosynthetic bioprocesses.",
-            "Tubular photobioreactors: Used for large-scale algae cultivation and photosynthetic bioprocesses."
-        ],
-        "Wave-Induced Motion Bioreactors": [
-            "Wave bioreactors: Used for cell culture, tissue engineering, and bioprocess development."
-        ],
-        "Other Bioreactors": [
-            "Airlift bioreactors: Used for cell culture, bioremediation, and wastewater treatment.",
-            "Perfusion bioreactors: Used for cell culture, tissue engineering, and bioprocess development.",
-            "Rotating wall vessel bioreactors: Used for cell culture, tissue engineering, and bioprocess development."
-        ]
-    }
-
-    selected_bioreactor_type = st.selectbox("Select Bioreactor Type", list(bioreactors.keys()))
-    selected_bioreactor = st.selectbox("Select Bioreactor", bioreactors[selected_bioreactor_type])
-
-    components = {
-        "Main Components": {
-            "Vessel": st.checkbox("Vessel: The main container of the bioreactor, made from materials like glass, stainless steel, or plastic.", True),
-            "Lid/Headplate": st.checkbox("Lid/Headplate: The top part of the bioreactor, providing access for sampling, feeding, and monitoring.", True),
-            "Impeller/Agitator": st.checkbox("Impeller/Agitator: Mixes the culture medium, ensuring uniform distribution of nutrients and temperature.", True)
-        },
-        "Sensing and Control Components": {
-            "pH Sensor": st.checkbox("pH Sensor: Monitors the acidity/basicity of the culture medium.", True),
-            "Temperature Sensor": st.checkbox("Temperature Sensor: Monitors the temperature of the culture medium.", True),
-            "Dissolved Oxygen (DO) Sensor": st.checkbox("Dissolved Oxygen (DO) Sensor: Monitors the oxygen levels in the culture medium.", True),
-            "Conductivity Sensor": st.checkbox("Conductivity Sensor: Monitors the conductivity of the culture medium.", True),
-            "Control Unit": st.checkbox("Control Unit: Regulates parameters like pH, temperature, and DO to maintain optimal conditions.", True)
-        },
-        "Aeration and Mixing Components": {
-            "Sparger": st.checkbox("Sparger: Introduces air or gas into the culture medium.", True),
-            "Aeration System": st.checkbox("Aeration System: Provides a consistent supply of air or gas to the bioreactor.", True),
-            "Baffles": st.checkbox("Baffles: Enhances mixing and reduces vortex formation.", True),
-            "Impeller Blades": st.checkbox("Impeller Blades: Mixes the culture medium, ensuring uniform distribution of nutrients and temperature.", True),
-            "Impeller Stirrers": st.checkbox("Impeller stirrer: Uses an impeller (a rotating blade or paddle) to mix the culture medium.", False),
-            "Anchor Stirrers": st.checkbox("Anchor stirrer: Uses a large, anchor-shaped blade to mix the culture medium.", False),
-            "Helical Stirrers": st.checkbox("Helical stirrer: Uses a helical-shaped blade to mix the culture medium.", False),
-            "Turbine Stirrers": st.checkbox("Turbine stirrer: Uses a turbine-shaped blade to mix the culture medium.", False)
-        },
-        "Feeding and Harvesting Components": {
-            "Feed Pump": st.checkbox("Feed Pump: Delivers nutrients or other substances to the bioreactor.", True),
-            "Harvest Pump": st.checkbox("Harvest Pump: Removes the biomass or product from the bioreactor.", True),
-            "Sampling Port": st.checkbox("Sampling Port: Allows for aseptic sampling of the culture medium.", True),
-            "Exhaust System": st.checkbox("Exhaust System: Removes waste gases and vapors from the bioreactor.", True)
-        },
-        "Support Components": {
-            "Base Plate": st.checkbox("Base Plate: Provides a stable foundation for the bioreactor.", True),
-            "Support Legs": st.checkbox("Support Legs: Elevates the bioreactor, ensuring easy access and maintenance.", True),
-            "Cable Management": st.checkbox("Cable Management: Organizes cables and tubing, reducing clutter and improving safety.", True)
-        },
-        "Optional Components": {
-            "Biomass Sensor": st.checkbox("Biomass Sensor: Monitors the biomass concentration in the culture medium.", False),
-            "Nutrient Sensors": st.checkbox("Nutrient Sensors: Monitors the levels of specific nutrients in the culture medium.", False),
-            "Gas Analyzer": st.checkbox("Gas Analyzer: Analyzes the composition of gases in the bioreactor.", False),
-            "Automated Sampling System": st.checkbox("Automated Sampling System: Enables automated sampling and analysis of the culture medium.", False)
-        }
-    }
-
-    if st.button("Confirm Bioreactor"):
-        st.success(f"Bioreactor {selected_bioreactor} confirmed with components: {', '.join([k for k, v in components.items() if v])}")
-        st.session_state["selected_bioreactor"] = selected_bioreactor
-        st.session_state["components"] = components
-
-    if st.button("Generate Bioreactor Flow"):
-        if "selected_bioreactor" in st.session_state and "components" in st.session_state:
-            generate_bioreactor_diagram(st.session_state["selected_bioreactor"], st.session_state["components"])
-        else:
-            st.error("Please confirm the bioreactor settings first.")
-
-with tabs[1]:
-    st.subheader("Media Creator")
-    st.write("Configure your media components and adjust for volume")
-
-    with st.form("media_form"):
-        volume = st.number_input("Total Volume (L)", min_value=0.1, step=0.1)
-
-        # Basal Media
-        st.write("Basal Media")
-        basal_media = st.selectbox("Select Basal Media", [
-            "Do not select media", "DMEM", "RPMI 1640", "MEM", "Ham's F-12", "M199", "IMDM", "Alpha-MEM", "Beta-MEM"
-        ])
-
-        # Serum-Free Media
-        st.write("Serum-Free Media")
-        serum_free_media = st.selectbox("Select Serum-Free Media", [
-            "Do not select media", "PFHM-II", "CDM-HD", "X-VIVO", "AIM-V", "SFM4Mega", "Sf-900 II SFM", "ExCell"
-        ])
-
-        # Specialty Media
-        st.write("Specialty Media")
-        specialty_media = st.selectbox("Select Specialty Media", [
-            "Do not select media", "Neurobasal Medium", "STEMCELL Technologies' Media", "MesenCult", "Osteoblast Growth Medium",
-            "Chondrocyte Growth Medium", "Adipocyte Growth Medium", "Hepatocyte Growth Medium"
-        ])
-
-        # Biomass Production Media
-        st.write("Biomass Production Media")
-        biomass_production_media = st.selectbox("Select Biomass Production Media", [
-            "Do not select media", "LB", "TB", "YPD", "PDA", "MRS", "TSA", "BHI"
-        ])
-
-        # Biotherapeutics Production Media
-        st.write("Biotherapeutics Production Media")
-        biotherapeutics_production_media = st.selectbox("Select Biotherapeutics Production Media", [
-            "Do not select media", "CHO Cell Culture Medium", "HEK Cell Culture Medium", "Insect Cell Culture Medium",
-            "Hybridoma Cell Culture Medium", "PER.C6 Cell Culture Medium", "Vero Cell Culture Medium",
-            "MDCK Cell Culture Medium"
-        ])
-
-        # Additional Supplements
-        st.write("Additional Supplements")
-        fbs = st.number_input("Fetal Bovine Serum (FBS) (mL/L)", 0.0, 100.0, 10.0)
-        penicillin_streptomycin = st.number_input("Penicillin-Streptomycin (mL/L)", 0.0, 100.0, 10.0)
-        l_glutamine = st.number_input("L-Glutamine (mM)", 0.0, 100.0, 2.0)
-        neaa = st.number_input("Non-Essential Amino Acids (NEAA) (mM)", 0.0, 100.0, 1.0)
-        sodium_pyruvate = st.number_input("Sodium Pyruvate (mM)", 0.0, 100.0, 1.0)
-        hepes_buffer = st.number_input("Hepes Buffer (mM)", 0.0, 100.0, 25.0)
-        growth_factors = st.text_area("Growth Factors", "EGF, FGF, IGF")
-
-        # Submit button
-        submitted = st.form_submit_button("Generate Media Recipe")
-
-        if submitted:
-            st.success(f"Media recipe generated for {volume} L")
-            st.write(f"Basal Media: {basal_media}")
-            st.write(f"Serum-Free Media: {serum_free_media}")
-            st.write(f"Specialty Media: {specialty_media}")
-            st.write(f"Biomass Production Media: {biomass_production_media}")
-            st.write(f"Biotherapeutics Production Media: {biotherapeutics_production_media}")
-            st.write(f"Fetal Bovine Serum (FBS): {fbs * volume} mL")
-            st.write(f"Penicillin-Streptomycin: {penicillin_streptomycin * volume} mL")
-            st.write(f"L-Glutamine: {l_glutamine * volume} mM")
-            st.write(f"Non-Essential Amino Acids (NEAA): {neaa * volume} mM")
-            st.write(f"Sodium Pyruvate: {sodium_pyruvate * volume} mM")
-            st.write(f"Hepes Buffer: {hepes_buffer * volume} mM")
-            st.write(f"Growth Factors: {growth_factors}")
-
-            st.session_state["media_recipe"] = {
-                "volume": volume,
-                "basal_media": basal_media,
-                "serum_free_media": serum_free_media,
-                "specialty_media": specialty_media,
-                "biomass_production_media": biomass_production_media,
-                "biotherapeutics_production_media": biotherapeutics_production_media,
-                "fbs": fbs,
-                "penicillin_streptomycin": penicillin_streptomycin,
-                "l_glutamine": l_glutamine,
-                "neaa": neaa,
-                "sodium_pyruvate": sodium_pyruvate,
-                "hepes_buffer": hepes_buffer,
-                "growth_factors": growth_factors
-            }
-
 with tabs[2]:
     st.subheader("Bioprocess Simulator")
     tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
@@ -1153,3 +952,193 @@ def ai_analysis(biomass, glucose, oxygen, lactate, ammonia):
         recommendations.append("High ammonia levels detected. Optimize the nitrogen source or control the pH better.")
 
     return explanation, recommendations
+    with upstream_tabs[3]:
+        st.subheader("Integration")
+        # Existing code for Integration
+
+elif process_stage == "Downstream":
+    downstream_tabs = st.tabs(["Unit Operations Library", "Process Simulation", "Equipment Design", "Data Analysis"])
+    with downstream_tabs[0]:
+        st.subheader("Unit Operations Library")
+        # Code for Unit Operations Library
+    with downstream_tabs[1]:
+        st.subheader("Process Simulation")
+        # Code for Process Simulation
+    with downstream_tabs[2]:
+        st.subheader("Equipment Design")
+        # Code for Equipment Design
+    with downstream_tabs[3]:
+        st.subheader("Data Analysis")
+        # Code for Data Analysis
+
+with tabs[0]:
+    st.subheader("Bioreactor Selector")
+    bioreactors = {
+        "Stirred Tank Bioreactors": [
+            "Glass bioreactors: Suitable for small-scale applications, often used in research and development.",
+            "Stainless steel bioreactors: Robust and corrosion-resistant, commonly used in industrial-scale applications.",
+            "Single-use bioreactors: Disposable bioreactors made from plastic or other materials, often used in biopharmaceutical applications."
+        ],
+        "Packed Bed Bioreactors": [
+            "Fixed bed bioreactors: Used for solid-phase catalysis and enzymatic reactions.",
+            "Fluidized bed bioreactors: Used for applications requiring high mass transfer rates."
+        ],
+        "Membrane Bioreactors": [
+            "Microfiltration/Ultrafiltration (MF/UF) bioreactors: Used for cell culture, protein separation, and wastewater treatment.",
+            "Dialysis bioreactors: Used for cell culture, protein separation, and medical applications."
+        ],
+        "Photo-Bioreactors": [
+            "Flat panel photobioreactors: Used for algae cultivation and photosynthetic bioprocesses.",
+            "Tubular photobioreactors: Used for large-scale algae cultivation and photosynthetic bioprocesses."
+        ],
+        "Wave-Induced Motion Bioreactors": [
+            "Wave bioreactors: Used for cell culture, tissue engineering, and bioprocess development."
+        ],
+        "Other Bioreactors": [
+            "Airlift bioreactors: Used for cell culture, bioremediation, and wastewater treatment.",
+            "Perfusion bioreactors: Used for cell culture, tissue engineering, and bioprocess development.",
+            "Rotating wall vessel bioreactors: Used for cell culture, tissue engineering, and bioprocess development."
+        ]
+    }
+
+    selected_bioreactor_type = st.selectbox("Select Bioreactor Type", list(bioreactors.keys()))
+    selected_bioreactor = st.selectbox("Select Bioreactor", bioreactors[selected_bioreactor_type])
+
+    components = {
+        "Main Components": {
+            "Vessel": st.checkbox("Vessel: The main container of the bioreactor, made from materials like glass, stainless steel, or plastic.", True),
+            "Lid/Headplate": st.checkbox("Lid/Headplate: The top part of the bioreactor, providing access for sampling, feeding, and monitoring.", True),
+            "Impeller/Agitator": st.checkbox("Impeller/Agitator: Mixes the culture medium, ensuring uniform distribution of nutrients and temperature.", True)
+        },
+        "Sensing and Control Components": {
+            "pH Sensor": st.checkbox("pH Sensor: Monitors the acidity/basicity of the culture medium.", True),
+            "Temperature Sensor": st.checkbox("Temperature Sensor: Monitors the temperature of the culture medium.", True),
+            "Dissolved Oxygen (DO) Sensor": st.checkbox("Dissolved Oxygen (DO) Sensor: Monitors the oxygen levels in the culture medium.", True),
+            "Conductivity Sensor": st.checkbox("Conductivity Sensor: Monitors the conductivity of the culture medium.", True),
+            "Control Unit": st.checkbox("Control Unit: Regulates parameters like pH, temperature, and DO to maintain optimal conditions.", True)
+        },
+        "Aeration and Mixing Components": {
+            "Sparger": st.checkbox("Sparger: Introduces air or gas into the culture medium.", True),
+            "Aeration System": st.checkbox("Aeration System: Provides a consistent supply of air or gas to the bioreactor.", True),
+            "Baffles": st.checkbox("Baffles: Enhances mixing and reduces vortex formation.", True),
+            "Impeller Blades": st.checkbox("Impeller Blades: Mixes the culture medium, ensuring uniform distribution of nutrients and temperature.", True),
+            "Impeller Stirrers": st.checkbox("Impeller stirrer: Uses an impeller (a rotating blade or paddle) to mix the culture medium.", False),
+            "Anchor Stirrers": st.checkbox("Anchor stirrer: Uses a large, anchor-shaped blade to mix the culture medium.", False),
+            "Helical Stirrers": st.checkbox("Helical stirrer: Uses a helical-shaped blade to mix the culture medium.", False),
+            "Turbine Stirrers": st.checkbox("Turbine stirrer: Uses a turbine-shaped blade to mix the culture medium.", False)
+        },
+        "Feeding and Harvesting Components": {
+            "Feed Pump": st.checkbox("Feed Pump: Delivers nutrients or other substances to the bioreactor.", True),
+            "Harvest Pump": st.checkbox("Harvest Pump: Removes the biomass or product from the bioreactor.", True),
+            "Sampling Port": st.checkbox("Sampling Port: Allows for aseptic sampling of the culture medium.", True),
+            "Exhaust System": st.checkbox("Exhaust System: Removes waste gases and vapors from the bioreactor.", True)
+        },
+        "Support Components": {
+            "Base Plate": st.checkbox("Base Plate: Provides a stable foundation for the bioreactor.", True),
+            "Support Legs": st.checkbox("Support Legs: Elevates the bioreactor, ensuring easy access and maintenance.", True),
+            "Cable Management": st.checkbox("Cable Management: Organizes cables and tubing, reducing clutter and improving safety.", True)
+        },
+        "Optional Components": {
+            "Biomass Sensor": st.checkbox("Biomass Sensor: Monitors the biomass concentration in the culture medium.", False),
+            "Nutrient Sensors": st.checkbox("Nutrient Sensors: Monitors the levels of specific nutrients in the culture medium.", False),
+            "Gas Analyzer": st.checkbox("Gas Analyzer: Analyzes the composition of gases in the bioreactor.", False),
+            "Automated Sampling System": st.checkbox("Automated Sampling System: Enables automated sampling and analysis of the culture medium.", False)
+        }
+    }
+
+    if st.button("Confirm Bioreactor"):
+        st.success(f"Bioreactor {selected_bioreactor} confirmed with components: {', '.join([k for k, v in components.items() if v])}")
+        st.session_state["selected_bioreactor"] = selected_bioreactor
+        st.session_state["components"] = components
+
+    if st.button("Generate Bioreactor Flow"):
+        if "selected_bioreactor" in st.session_state and "components" in st.session_state:
+            generate_bioreactor_diagram(st.session_state["selected_bioreactor"], st.session_state["components"])
+        else:
+            st.error("Please confirm the bioreactor settings first.")
+
+with tabs[1]:
+    st.subheader("Media Creator")
+    st.write("Configure your media components and adjust for volume")
+
+    with st.form("media_form"):
+        volume = st.number_input("Total Volume (L)", min_value=0.1, step=0.1)
+
+        # Basal Media
+        st.write("Basal Media")
+        basal_media = st.selectbox("Select Basal Media", [
+            "Do not select media", "DMEM", "RPMI 1640", "MEM", "Ham's F-12", "M199", "IMDM", "Alpha-MEM", "Beta-MEM"
+        ])
+
+        # Serum-Free Media
+        st.write("Serum-Free Media")
+        serum_free_media = st.selectbox("Select Serum-Free Media", [
+            "Do not select media", "PFHM-II", "CDM-HD", "X-VIVO", "AIM-V", "SFM4Mega", "Sf-900 II SFM", "ExCell"
+        ])
+
+        # Specialty Media
+        st.write("Specialty Media")
+        specialty_media = st.selectbox("Select Specialty Media", [
+            "Do not select media", "Neurobasal Medium", "STEMCELL Technologies' Media", "MesenCult", "Osteoblast Growth Medium",
+            "Chondrocyte Growth Medium", "Adipocyte Growth Medium", "Hepatocyte Growth Medium"
+        ])
+
+        # Biomass Production Media
+        st.write("Biomass Production Media")
+        biomass_production_media = st.selectbox("Select Biomass Production Media", [
+            "Do not select media", "LB", "TB", "YPD", "PDA", "MRS", "TSA", "BHI"
+        ])
+
+        # Biotherapeutics Production Media
+        st.write("Biotherapeutics Production Media")
+        biotherapeutics_production_media = st.selectbox("Select Biotherapeutics Production Media", [
+            "Do not select media", "CHO Cell Culture Medium", "HEK Cell Culture Medium", "Insect Cell Culture Medium",
+            "Hybridoma Cell Culture Medium", "PER.C6 Cell Culture Medium", "Vero Cell Culture Medium",
+            "MDCK Cell Culture Medium"
+        ])
+
+        # Additional Supplements
+        st.write("Additional Supplements")
+        fbs = st.number_input("Fetal Bovine Serum (FBS) (mL/L)", 0.0, 100.0, 10.0)
+        penicillin_streptomycin = st.number_input("Penicillin-Streptomycin (mL/L)", 0.0, 100.0, 10.0)
+        l_glutamine = st.number_input("L-Glutamine (mM)", 0.0, 100.0, 2.0)
+        neaa = st.number_input("Non-Essential Amino Acids (NEAA) (mM)", 0.0, 100.0, 1.0)
+        sodium_pyruvate = st.number_input("Sodium Pyruvate (mM)", 0.0, 100.0, 1.0)
+        hepes_buffer = st.number_input("Hepes Buffer (mM)", 0.0, 100.0, 25.0)
+        growth_factors = st.text_area("Growth Factors", "EGF, FGF, IGF")
+
+        # Submit button
+        submitted = st.form_submit_button("Generate Media Recipe")
+
+        if submitted:
+            st.success(f"Media recipe generated for {volume} L")
+            st.write(f"Basal Media: {basal_media}")
+            st.write(f"Serum-Free Media: {serum_free_media}")
+            st.write(f"Specialty Media: {specialty_media}")
+            st.write(f"Biomass Production Media: {biomass_production_media}")
+            st.write(f"Biotherapeutics Production Media: {biotherapeutics_production_media}")
+            st.write(f"Fetal Bovine Serum (FBS): {fbs * volume} mL")
+            st.write(f"Penicillin-Streptomycin: {penicillin_streptomycin * volume} mL")
+            st.write(f"L-Glutamine: {l_glutamine * volume} mM")
+            st.write(f"Non-Essential Amino Acids (NEAA): {neaa * volume} mM")
+            st.write(f"Sodium Pyruvate: {sodium_pyruvate * volume} mM")
+            st.write(f"Hepes Buffer: {hepes_buffer * volume} mM")
+            st.write(f"Growth Factors: {growth_factors}")
+
+            st.session_state["media_recipe"] = {
+                "volume": volume,
+                "basal_media": basal_media,
+                "serum_free_media": serum_free_media,
+                "specialty_media": specialty_media,
+                "biomass_production_media": biomass_production_media,
+                "biotherapeutics_production_media": biotherapeutics_production_media,
+                "fbs": fbs,
+                "penicillin_streptomycin": penicillin_streptomycin,
+                "l_glutamine": l_glutamine,
+                "neaa": neaa,
+                "sodium_pyruvate": sodium_pyruvate,
+                "hepes_buffer": hepes_buffer,
+                "growth_factors": growth_factors
+            }
+
+
