@@ -677,7 +677,7 @@ def ai_analysis(biomass, glucose, oxygen, lactate, ammonia):
     return explanation, recommendations
 
 # Place buttons at the bottom of the Bioprocess Simulator page
-st.markdown("---")
+st.markdown("Optimize your bioprocess in real-time. Simulate the impact of any change to your process variables and make data-driven decisions. Click to simulate.")
 if st.button("Simulate Bioprocess"):
     config_data = {
         "process_stage": process_stage,
