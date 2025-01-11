@@ -675,9 +675,8 @@ def simulate_bioprocess(config):
     ammonia = np.random.rand(config['duration']) * 2
     return time, biomass, glucose, oxygen, lactate, ammonia
 
-# Collect all configuration data from different tabs and pass to simulate_bioprocess
 st.markdown("Optimize your bioprocess in real-time. Simulate the impact of any change to your process variables and make data-driven decisions. Click to simulate.")
-if st.button("Simulate Bioprocess"):
+if st.button("Simulate Bioprocess", key="simulate_bioprocess_button"):
     config_data = {
         "process_stage": process_stage,
         "process_type": process_type,
@@ -735,7 +734,7 @@ if st.button("Simulate Bioprocess"):
     for rec in recommendations:
         st.write(f"- {rec}")
 
-if st.button("Download Configuration"):
+if st.button("Download Configuration", key="download_configuration_button"):
     config_data = {
         "process_type": process_type,
         "organism_type": organism_type,
@@ -759,7 +758,8 @@ if st.button("Download Configuration"):
         label="Download Configuration",
         data=config_json,
         file_name="bioprocess_config.json",
-        mime="application/json"
+        mime="application/json",
+        key="download_configuration_button"
     )
     
 with tab4:
