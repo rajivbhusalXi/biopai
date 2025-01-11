@@ -407,6 +407,59 @@ with tabs[2]:
             temperature_control = st.slider("Temperature Control (°C)", min_value=20.0, max_value=45.0, value=37.0, step=0.5)
             pH_control = st.slider("pH Control", min_value=4.0, max_value=9.0, value=7.2, step=0.1)
 
+if st.button("Simulate Bioprocess"):
+    def simulate_bioprocess(config):
+        time = np.arange(0, config['duration'])
+        biomass = np.random.rand(config['duration']) * 100
+        glucose = np.random.rand(config['duration']) * 10
+        oxygen = np.random.rand(config['duration']) * 100
+        lactate = np.random.rand(config['duration']) * 5
+        ammonia = np.random.rand(config['duration']) * 2
+        return time, biomass, glucose, oxygen, lactate, ammonia
+
+    config_data = {
+        "temp_range": temp_range,
+        "ph_range": ph_range,
+        "do_setpoint": do_setpoint,
+        "agitation": agitation,
+        "aeration": aeration,
+        "duration": duration,
+        "temperature_control": temperature_control,
+        "pH_control": pH_control
+    }
+    time, biomass, glucose, oxygen, lactate, ammonia = simulate_bioprocess(config_data)
+
+    st.subheader("Bioprocess Simulation Results")
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=time, y=biomass, mode='lines', name='Biomass'))
+    fig.add_trace(go.Scatter(x=time, y=glucose, mode='lines', name='Glucose'))
+    fig.add_trace(go.Scatter(x=time, y=oxygen, mode='lines', name='Oxygen'))
+    fig.add_trace(go.Scatter(x=time, y=lactate, mode='lines', name='Lactate'))
+    fig.add_trace(go.Scatter(x=time, y=ammonia, mode='lines', name='Ammonia'))
+    fig.update_layout(title='Bioprocess Simulation Results', xaxis_title='Time (hours)', yaxis_title='Concentration')
+    st.plotly_chart(fig, use_container_width=True)
+
+    charts = [
+        ("Biomass vs Glucose", biomass, glucose),
+        ("Biomass vs Oxygen", biomass, oxygen),
+        ("Biomass vs Lactate", biomass, lactate),
+        ("Biomass vs Ammonia", biomass, ammonia),
+        ("Glucose vs Oxygen", glucose, oxygen),
+        ("Glucose vs Lactate", glucose, lactate),
+        ("Glucose vs Ammonia", glucose, ammonia),
+        ("Oxygen vs Lactate", oxygen, lactate),
+        ("Oxygen vs Ammonia", oxygen, ammonia),
+        ("Lactate vs Ammonia", lactate, ammonia),
+        # Add more charts here as needed
+    ]
+
+    for title, y1, y2 in charts:
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=time, y=y1, mode='lines', name=title.split(' vs ')[0]))
+        fig.add_trace(go.Scatter(x=time, y=y2, mode='lines', name=title.split(' vs ')[1]))
+        fig.update_layout(title=title, xaxis_title='Time (hours)', yaxis_title='Concentration')
+        st.plotly_chart(fig, use_container_width=True)
+        
     with tab2:
         st.subheader("Media Components")
         
