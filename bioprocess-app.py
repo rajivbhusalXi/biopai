@@ -461,22 +461,22 @@ if process_stage == "Upstream":
             with col6:
                 st.write("Feed Control Strategy")
                 
-            if process_type in ["Fed-batch Culture", "Perfusion Culture"]:
-                feed_control = st.selectbox(
-                    "Feed Control Method",
-                    ["Time-based", "pH-stat", "DO-stat", "Glucose-stat", "Exponential", "Specific Growth Rate"],
-                    key="feed_control"
-                )
-                
-                if feed_control == "Exponential":
-                    mu_setpoint = st.number_input("Target Specific Growth Rate (h⁻¹)", 0.01, 1.0, 0.1, key="mu_setpoint")
-                    y_xs = st.number_input("Biomass Yield on Substrate (g/g)", 0.1, 1.0, 0.5, key="y_xs")
-                
- if feed_control == "Specific Growth Rate":
-    st.write("Growth Rate Control")
-    mu_control = st.checkbox("Enable μ-stat Control", True, key="mu_control")
-    if mu_control:
-        mu_target = st.number_input("Target μ (h⁻¹)", 0.01, 1.0, 0.1, key="mu_target")
+if process_type in ["Fed-batch Culture", "Perfusion Culture"]:
+    feed_control = st.selectbox(
+        "Feed Control Method",
+        ["Time-based", "pH-stat", "DO-stat", "Glucose-stat", "Exponential", "Specific Growth Rate"],
+        key="feed_control"
+    )
+    
+    if feed_control == "Exponential":
+        mu_setpoint = st.number_input("Target Specific Growth Rate (h⁻¹)", 0.01, 1.0, 0.1, key="mu_setpoint")
+        y_xs = st.number_input("Biomass Yield on Substrate (g/g)", 0.1, 1.0, 0.5, key="y_xs")
+
+    elif feed_control == "Specific Growth Rate":
+        st.write("Growth Rate Control")
+        mu_control = st.checkbox("Enable μ-stat Control", True, key="mu_control")
+        if mu_control:
+            mu_target = st.number_input("Target μ (h⁻¹)", 0.01, 1.0, 0.1, key="mu_target")
 
 with tab4:
     st.subheader("Process Analytical Technology (PAT)")
