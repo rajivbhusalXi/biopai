@@ -566,9 +566,9 @@ with tabs[2]:
             )
 
     with tab6:
-    st.subheader("Data Analysis")
+        st.subheader("Data Analysis")
     
-    col11, col12 = st.columns(2)
+        col11, col12 = st.columns(2)
     
     with col11:
         st.write("Process Data Visualization")
