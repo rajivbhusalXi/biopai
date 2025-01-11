@@ -631,9 +631,9 @@ with tabs[2]:
                 st.write("Seasonal Decomposition: Additive")
 
     with tab7:
-    st.subheader("Machine Learning")
+        st.subheader("Machine Learning")
 
-    col13, col14 = st.columns(2)
+        col13, col14 = st.columns(2)
 
     with col13:
         st.write("Model Selection")
