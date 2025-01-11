@@ -436,7 +436,7 @@ with tabs[2]:
 
                 return explanation, recommendations
 
-            def add_buttons():
+def add_buttons():
     if st.button("Simulate Bioprocess"):
         config_data = {
             "temp_range": temp_range,
