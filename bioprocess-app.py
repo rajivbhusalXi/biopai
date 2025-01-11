@@ -406,7 +406,6 @@ with col2:
     # Additional advanced parameters
     temperature_control = st.slider("Temperature Control (°C)", min_value=20.0, max_value=45.0, value=37.0, step=0.5)
     pH_control = st.slider("pH Control", min_value=4.0, max_value=9.0, value=7.2, step=0.1)37.0, step=0.5)
-pH_control = st.slider("pH Control", min_value=4.0, max_value=9.0, value=7.2, step=0.1)
   
 with tab2:
     st.subheader("Media Components")
