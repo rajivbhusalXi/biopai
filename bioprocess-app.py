@@ -566,69 +566,69 @@ with tabs[2]:
             )
 
     with tab6:
-        st.subheader("Data Analysis")
+    st.subheader("Data Analysis")
+    
+    col11, col12 = st.columns(2)
+    
+    with col11:
+        st.write("Process Data Visualization")
+        data_vis = st.selectbox(
+            "Select Data Visualization",
+            ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"],
+            key="data_vis_tab6"
+        )
+        data_export = st.selectbox(
+            "Select Data Export Format",
+            ["CSV", "Excel", "JSON", "PDF"],
+            key="data_export_tab6"
+        )
 
-        col11, col12 = st.columns(2)
+        fig = go.Figure()
 
-        with col11:
-            st.write("Process Data Visualization")
-            data_vis = st.selectbox(
-                "Select Data Visualization",
-                ["Time-series Plot", "Scatter Plot", "Bar Chart", "Heatmap"],
-                key="data_vis"
-            )
-            data_export = st.selectbox(
-                "Select Data Export Format",
-                ["CSV", "Excel", "JSON", "PDF"],
-                key="data_export"
-            )
-
-            fig = go.Figure()
-
-            if data_vis == "Time-series Plot":
-                fig.add_trace(go.Scatter(x=[1, 2, 3], y=[10, 20, 30]))
-
-            elif data_vis == "Scatter Plot":
-                fig.add_trace(go.Scatter(x=[1, 2, 3], y=[10, 20, 30], mode='markers'))
-
-            elif data_vis == "Bar Chart":
-                fig.add_trace(go.Bar(x=[1, 2, 3], y=[10, 20, 30]))
-
-            elif data_vis == "Heatmap":
-                fig.add_trace(go.Heatmap(z=[[10, 20], [30, 40]]))
-
-            st.plotly_chart(fig, use_container_width=True)
-
-        with col12:
-            st.write("Statistical Analysis")
-
-            # Statistical analysis options
-            stats_analysis = st.selectbox(
-                "Select Statistical Analysis",
-                ["Descriptive Statistics", "Inferential Statistics", "Regression Analysis", "Time-series Analysis"],
-                key="stats_analysis"
-            )
-
-            # Confidence interval settings
-            ci_level = st.number_input("Confidence Interval Level (%)", 50, 100, 95, key="ci_level")
-
-            # Statistical analysis output
-            if stats_analysis == "Descriptive Statistics":
-                st.write("Mean: 20.5")
-                st.write("Median: 20.0")
-                st.write("Standard Deviation: 5.2")
-
-            elif stats_analysis == "Inferential Statistics":
-                st.write("p-value: 0.01")
-                st.write("t-statistic: 2.5")
-
-            elif stats_analysis == "Regression Analysis":
-                st.write("R-squared: 0.8")
-                st.write("Coefficient of Determination: 0.7")
-
-            elif stats_analysis == "Time-series Analysis":
-                st.write("ARIMA Order: (1,1,1)")
-                st.write("Seasonal Decomposition: Additive")
+        if data_vis == "Time-series Plot":
+            fig.add_trace(go.Scatter(x=[1, 2, 3], y=[10, 20, 30]))
+        
+        elif data_vis == "Scatter Plot":
+            fig.add_trace(go.Scatter(x=[1, 2, 3], y=[10, 20, 30], mode='markers'))
+        
+        elif data_vis == "Bar Chart":
+            fig.add_trace(go.Bar(x=[1, 2, 3], y=[10, 20, 30]))
+        
+        elif data_vis == "Heatmap":
+            fig.add_trace(go.Heatmap(z=[[10, 20], [30, 40]]))
+        
+        st.plotly_chart(fig, use_container_width=True)
+    
+    with col12:
+        st.write("Statistical Analysis")
+        
+        # Statistical analysis options
+        stats_analysis = st.selectbox(
+            "Select Statistical Analysis",
+            ["Descriptive Statistics", "Inferential Statistics", "Regression Analysis", "Time-series Analysis"],
+            key="stats_analysis_tab6"
+        )
+        
+        # Confidence interval settings
+        ci_level = st.number_input("Confidence Interval Level (%)", 50, 100, 95, key="ci_level_tab6")
+        
+        # Statistical analysis output
+        if stats_analysis == "Descriptive Statistics":
+            st.write("Mean: 20.5")
+            st.write("Median: 20.0")
+            st.write("Standard Deviation: 5.2")
+        
+        elif stats_analysis == "Inferential Statistics":
+            st.write("p-value: 0.01")
+            st.write("t-statistic: 2.5")
+        
+        elif stats_analysis == "Regression Analysis":
+            st.write("R-squared: 0.8")
+            st.write("Coefficient of Determination: 0.7")
+        
+        elif stats_analysis == "Time-series Analysis":
+            st.write("ARIMA Order: (1,1,1)")
+            st.write("Seasonal Decomposition: Additive")
 
     with tab7:
         st.subheader("Machine Learning")
