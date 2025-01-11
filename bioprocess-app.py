@@ -165,7 +165,34 @@ with st.sidebar:
             st.success("Settings confirmed!")
 
 # Main content in tabs
-tabs = st.tabs(["Bioreactor Selector", "Media Creator", "Bioprocess Simulator", "Integration"])
+if process_stage == "Upstream":
+    upstream_tabs = st.tabs(["Bioreactor Selector", "Media Creator", "Bioprocess Simulator", "Integration"])
+    with upstream_tabs[0]:
+        st.subheader("Bioreactor Selector")
+        # Existing code for Bioreactor Selector
+    with upstream_tabs[1]:
+        st.subheader("Media Creator")
+        # Existing code for Media Creator
+    with upstream_tabs[2]:
+        st.subheader("Bioprocess Simulator")
+        # Existing code for Bioprocess Simulator
+    with upstream_tabs[3]:
+        st.subheader("Integration")
+        # Existing code for Integration
+elif process_stage == "Downstream":
+    downstream_tabs = st.tabs(["Unit Operations Library", "Process Simulation", "Equipment Design", "Data Analysis"])
+    with downstream_tabs[0]:
+        st.subheader("Unit Operations Library")
+        # Code for Unit Operations Library
+    with downstream_tabs[1]:
+        st.subheader("Process Simulation")
+        # Code for Process Simulation
+    with downstream_tabs[2]:
+        st.subheader("Equipment Design")
+        # Code for Equipment Design
+    with downstream_tabs[3]:
+        st.subheader("Data Analysis")
+        # Code for Data Analysis
 
 with tabs[0]:
     st.subheader("Bioreactor Selector")
