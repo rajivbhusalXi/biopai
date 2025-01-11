@@ -717,7 +717,6 @@ if st.button("Simulate Bioprocess", key="simulate_bioprocess_button"):
         ("Oxygen vs Lactate", oxygen, lactate),
         ("Oxygen vs Ammonia", oxygen, ammonia),
         ("Lactate vs Ammonia", lactate, ammonia),
-        # Add more chart definitions here
     ]
 
     for i, (title, y1, y2) in enumerate(charts):
@@ -963,90 +962,3 @@ def ai_analysis(biomass, glucose, oxygen, lactate, ammonia):
         recommendations.append("High ammonia levels detected. Optimize the nitrogen source or control the pH better.")
 
     return explanation, recommendations
-
-# Place buttons at the bottom of the Bioprocess Simulator page
-st.markdown("Optimize your bioprocess in real-time. Simulate the impact of any change to your process variables and make data-driven decisions. Click to simulate.")
-if st.button("Simulate Bioprocess"):
-    config_data = {
-        "process_stage": process_stage,
-        "process_type": process_type,
-        "organism_type": organism_type,
-        "scale": scale,
-        "temp_range": temp_range,
-        "ph_range": ph_range,
-        "do_setpoint": do_setpoint,
-        "agitation": agitation,
-        "aeration": aeration,
-        "duration": duration,
-        "feed_control": feed_control if 'feed_control' in locals() else None,
-        "online_measurements": online_measurements,
-        "sampling_interval": sampling_interval,
-        "data_analysis": data_analysis,
-        "safety_features": safety_features
-    }
-    time, biomass, glucose, oxygen, lactate, ammonia = simulate_bioprocess(config_data)
-    
-    st.subheader("Bioprocess Simulation Results")
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=time, y=biomass, mode='lines', name='Biomass'))
-    fig.add_trace(go.Scatter(x=time, y=glucose, mode='lines', name='Glucose'))
-    fig.add_trace(go.Scatter(x=time, y=oxygen, mode='lines', name='Oxygen'))
-    fig.add_trace(go.Scatter(x=time, y=lactate, mode='lines', name='Lactate'))
-    fig.add_trace(go.Scatter(x=time, y=ammonia, mode='lines', name='Ammonia'))
-    fig.update_layout(title='Bioprocess Simulation Results', xaxis_title='Time (hours)', yaxis_title='Concentration')
-    st.plotly_chart(fig, use_container_width=True)
-
-    charts = [
-        ("Biomass vs Glucose", biomass, glucose),
-        ("Biomass vs Oxygen", biomass, oxygen),
-        ("Biomass vs Lactate", biomass, lactate),
-        ("Biomass vs Ammonia", biomass, ammonia),
-        ("Glucose vs Oxygen", glucose, oxygen),
-        ("Glucose vs Lactate", glucose, lactate),
-        ("Glucose vs Ammonia", glucose, ammonia),
-        ("Oxygen vs Lactate", oxygen, lactate),
-        ("Oxygen vs Ammonia", oxygen, ammonia),
-        ("Lactate vs Ammonia", lactate, ammonia),
-        # Add more chart definitions here
-    ]
-
-    for title, y1, y2 in charts:
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x=time, y=y1, mode='lines', name=title.split(' vs ')[0]))
-        fig.add_trace(go.Scatter(x=time, y=y2, mode='lines', name=title.split(' vs ')[1]))
-        fig.update_layout(title=title, xaxis_title='Time (hours)', yaxis_title='Concentration')
-        st.plotly_chart(fig, use_container_width=True)
-
-    explanation, recommendations = ai_analysis(biomass, glucose, oxygen, lactate, ammonia)
-    st.subheader("AI Analysis")
-    st.write(explanation)
-    st.write("Recommendations:")
-    for rec in recommendations:
-        st.write(f"- {rec}")
-
-if st.button("Download Configuration"):
-    config_data = {
-        "process_type": process_type,
-        "organism_type": organism_type,
-        "scale": scale,
-        "temp_range": temp_range,
-        "ph_range": ph_range,
-        "do_setpoint": do_setpoint,
-        "agitation": agitation,
-        "aeration": aeration,
-        "duration": duration,
-        "feed_control": feed_control,
-        "online_measurements": online_measurements,
-        "sampling_interval": sampling_interval,
-        "data_analysis": data_analysis,
-        "safety_features": safety_features
-    }
-    
-    config_json = json.dumps(config_data, indent=4)
-    
-    st.download_button(
-        label="Download Configuration",
-        data=config_json,
-        file_name="bioprocess_config.json",
-        mime="application/json"
-    )
